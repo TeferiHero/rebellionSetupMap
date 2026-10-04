@@ -26,7 +26,10 @@ class Game {
     this.map.onSelect = (planet) => {
       console.log("Selected planet: " + (planet ? planet.name : "none"));
       if (planet) {
-        this.unitPanel.show(planet.name, planet.units);
+        const planetName = planet.getPrettyName
+          ? planet.getPrettyName()
+          : planet.name;
+        this.unitPanel.show(planetName, planet.units);
       } else {
         this.unitPanel.clear();
       }
@@ -41,9 +44,9 @@ class Game {
 
     // this.showStartMenu();
     if (this.menuShown) {
-      this.toggleGameInfo();
+      this.toggleTurnInfo();
     }
-    // this.toggleGameInfo();
+    // this.toggleTurnInfo();
     this.showButtons();
     this.load();
   }
@@ -193,8 +196,8 @@ class Game {
 
     const buttons = {
       next_button: () => this.turnOrder.next(),
-      menu_button: () => this.toggleGameInfo(),
-      map_nav: () => this.map.setMapMode(),
+      menu_button: () => this.toggleTurnInfo(),
+      loyalty_nav: () => this.map.setMapMode(),
       sabotage_nav: () => this.map.setSabotageMode(),
       probe_nav: () => this.map.setProbeMode(),
       unit_nav: () => this.map.setUnitMode(),
@@ -238,9 +241,9 @@ class Game {
     //     this.turnOrder.next();
     // }.bind(this));
     // Game.showButton('menu_button', function(){
-    //     this.toggleGameInfo();
+    //     this.toggleTurnInfo();
     // }.bind(this));
-    // Game.showButton('map_nav', function(){
+    // Game.showButton('loyalty_nav', function(){
     //     this.map.setMapMode();
     // }.bind(this));
     // Game.showButton('sabotage_nav', function(){
@@ -280,7 +283,7 @@ class Game {
     // }.bind(this));
   }
 
-  toggleGameInfo() {
+  toggleTurnInfo() {
     let header = document.getElementById("game_info_container"),
       next = document.getElementById("next_button");
 

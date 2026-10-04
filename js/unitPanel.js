@@ -174,8 +174,8 @@ class UnitPanel {
       return;
     }
 
-    console.log("Rendering overview for " + planets.length + " planets");
-    console.log(planets.map((p) => p.name).join(", "));
+    // console.log("Rendering overview for " + planets.length + " planets");
+    // console.log(planets.map((p) => p.name).join(", "));
     // console.log(planets.map((p) => JSON.stringify(p)).join(", "));
     this.container.appendChild(this.makeFilterBar());
 
@@ -203,7 +203,9 @@ class UnitPanel {
 
       const name = document.createElement("div");
       name.className = "unit-planet-name";
-      name.textContent = planet.name;
+      name.textContent = planet.getPrettyName
+        ? planet.getPrettyName()
+        : planet.name;
       box.appendChild(name);
 
       present.forEach((unit) =>

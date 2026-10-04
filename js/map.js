@@ -214,28 +214,28 @@ class GameMap {
 
   //   Setting map modes
   setMapMode() {
-    this.body.className = "loyalty";
+    this.body.className = "loyalty-mode";
     this.clickMode = "toggleLoyalty";
     this.hideProbeData();
     this.unselectAllPlanets();
   }
 
   setSabotageMode() {
-    this.body.className = "sabotage";
+    this.body.className = "sabotage-mode";
     this.clickMode = "toggleSabotage";
     this.hideProbeData();
     this.unselectAllPlanets();
   }
 
   setProbeMode() {
-    this.body.className = "probe";
+    this.body.className = "probe-mode";
     this.clickMode = "toggleProbeStatus";
     this.showProbeData();
     this.unselectAllPlanets();
   }
 
   setUnitMode() {
-    this.body.className = "unit";
+    this.body.className = "unit-mode";
     this.clickMode = "togglePlanetSelection";
     this.hideProbeData();
     this.hideAllIcons();
@@ -569,8 +569,8 @@ class GameMap {
         resource: {
           queue: 1,
           types: [4],
-          x: 1000,
-          y: 1065,
+          x: 1135,
+          y: 1055,
         },
         const_loyalty: 4,
       },

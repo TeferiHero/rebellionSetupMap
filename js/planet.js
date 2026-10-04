@@ -370,6 +370,11 @@ class Planet {
     return this.selected;
   }
 
+  getPrettyName() {
+    const result = this.name.replace(/(?!^)([A-Z])/g, " $1");
+    return result;
+  }
+
   changePlanetUnits(unit, newAmount) {
     const next = Math.max(0, newAmount);
     this.units[unit] = next;
