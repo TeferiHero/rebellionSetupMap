@@ -132,50 +132,90 @@ class Game {
     //     showNavs();
     // }
 
+    
+
     showButtons(){
-        Game.showButton('next_button', function(){
-            this.turnOrder.next();
-        }.bind(this));
-        Game.showButton('menu_button', function(){
-            this.toggleGameInfo();
-        }.bind(this));
-        Game.showButton('map_nav', function(){
-            this.map.setMapMode();
-        }.bind(this));
-        Game.showButton('sabotage_nav', function(){
-            this.map.setSabotageMode();
-        }.bind(this));
-        Game.showButton('probe_nav', function(){
-            this.map.setProbeMode();
-        }.bind(this));
+
+        const buttons = {
+            next_button: () => this.turnOrder.next(),
+            menu_button: () => this.toggleGameInfo(),
+            map_nav: () => this.map.setMapMode(),
+            sabotage_nav: () => this.map.setSabotageMode(),
+            probe_nav: () => this.map.setProbeMode(),
+            unit_nav: () => this.map.setUnitMode(),
+            
+            set_starting_loyalty_button: () => {
+                this.save('Backup');
+                this.map.setStartingLoyalty();
+            },
+
+            reset_map_button: () => {
+                this.save('Backup');
+                this.map.reset();
+            },
+
+            reset_game_button: () => {
+                this.save('Backup');
+                this.initNewGame();
+            },
+
+            undo_reset_button: () => this.load('Backup'),
+            useExpansion: () => this.updateUseExpansion(),
+            pl2: () => this.setPlayersNumber(2),
+            pl4: () => this.setPlayersNumber(4)
+        };
+
+        Object.entries(buttons).forEach(([id, action]) => {
+            Game.showButton(id, action);
+        });
 
 
-        Game.showButton('set_starting_loyalty_button', function(){
-            this.save('Backup');
-            this.map.setStartingLoyalty();
-        }.bind(this));
-        Game.showButton('reset_map_button', function(){
-            this.save('Backup');
-            this.map.reset();
-        }.bind(this));
-        Game.showButton('reset_game_button', function(){
-            this.save('Backup');
-            this.initNewGame();
-        }.bind(this));
+        // Game.showButton('next_button', function(){
+        //     this.turnOrder.next();
+        // }.bind(this));
+        // Game.showButton('menu_button', function(){
+        //     this.toggleGameInfo();
+        // }.bind(this));
+        // Game.showButton('map_nav', function(){
+        //     this.map.setMapMode();
+        // }.bind(this));
+        // Game.showButton('sabotage_nav', function(){
+        //     this.map.setSabotageMode();
+        // }.bind(this));
+        // Game.showButton('probe_nav', function(){
+        //     this.map.setProbeMode();
+        // }.bind(this));
+        // Game.showButton('unit_nav', function(){
+        //     this.map.setUnitMode();
+        // }.bind(this));
 
 
-        Game.showButton('undo_reset_button', function(){
-            this.load('Backup');
-        }.bind(this));
-        Game.showButton('useExpansion', function(){
-            this.updateUseExpansion();
-        }.bind(this));
-        Game.showButton('pl2', function(){
-            this.setPlayersNumber(2);
-        }.bind(this));
-        Game.showButton('pl4', function(){
-            this.setPlayersNumber(4);
-        }.bind(this));
+        // Game.showButton('set_starting_loyalty_button', function(){
+        //     this.save('Backup');
+        //     this.map.setStartingLoyalty();
+        // }.bind(this));
+        // Game.showButton('reset_map_button', function(){
+        //     this.save('Backup');
+        //     this.map.reset();
+        // }.bind(this));
+        // Game.showButton('reset_game_button', function(){
+        //     this.save('Backup');
+        //     this.initNewGame();
+        // }.bind(this));
+
+
+        // Game.showButton('undo_reset_button', function(){
+        //     this.load('Backup');
+        // }.bind(this));
+        // Game.showButton('useExpansion', function(){
+        //     this.updateUseExpansion();
+        // }.bind(this));
+        // Game.showButton('pl2', function(){
+        //     this.setPlayersNumber(2);
+        // }.bind(this));
+        // Game.showButton('pl4', function(){
+        //     this.setPlayersNumber(4);
+        // }.bind(this));
     }
 
     toggleGameInfo() {
@@ -192,7 +232,6 @@ class Game {
             next.style.display = display;
         }
         else {
-
             const opacity = this.menuShown ? 0 : 1;
             header.style.opacity = opacity;
             next.style.opacity = opacity;

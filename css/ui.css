@@ -3,7 +3,7 @@
     flex: 0 0 var(--topbar-h);
     width: var(--topbar-h);
     height: var(--topbar-h);
-    font-size: 14px;
+    font-size: 20px;
     color: #fff;
     border: 2px solid #ddd;
     border-radius: 10px;
@@ -21,12 +21,12 @@
     background-color: rgba(255, 204, 0, 0.12);
 }
 
-.navbutton#menu_button,
+/* .navbutton#menu_button,
 .navbutton#next_button,
 .navbutton#map_nav,
 .navbutton#probe_nav   {
     font-size: 20px;
-}
+} */
 
 .navbutton#sabotage_nav {
     font-size: 16px;
@@ -37,6 +37,7 @@
     font-size: 14px;
 } */
 
+.unit #unit_nav,
 .loyalty #map_nav,
 .sabotage #sabotage_nav,
 .probe #probe_nav {
