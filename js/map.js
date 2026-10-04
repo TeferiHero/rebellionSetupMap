@@ -91,6 +91,11 @@ class GameMap {
     }
   }
 
+  getPlanetsData() {
+    // return Object.values(this.planetData).map((planet) => planet.units);
+    return this.planetData;
+  }
+
   setStartingLoyalty() {
     const planetData = Object.fromEntries(
       Object.keys(this.planets).map((name) => [
@@ -149,7 +154,11 @@ class GameMap {
     this.planetData[name][this.clickMode]();
 
     if (this.clickMode === "togglePlanetSelection" && this.onSelect) {
-      this.onSelect(this.planetData[name]);
+      if (this.planetData[name].isSelected()) {
+        this.onSelect(this.planetData[name]);
+      } else {
+        this.onSelect(undefined);
+      }
     }
 
     this.save();

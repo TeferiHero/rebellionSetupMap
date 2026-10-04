@@ -54,3 +54,12 @@ function getUnitNames(useExpansion, faction) {
     return unit.name;
   });
 }
+
+function getUnitFaction(name) {
+  for (let i = 0; i < UNITS.length; i++) {
+    if (UNITS[i].name === name) {
+      return UNITS[i].faction;
+    }
+  }
+  return null;
+}

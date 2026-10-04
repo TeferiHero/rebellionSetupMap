@@ -20,9 +20,11 @@ class Game {
         this.save();
       },
       () => getUnitNames(this.useExpansion),
+      () => Object.values(this.map.getPlanetsData() || {}),
     );
 
     this.map.onSelect = (planet) => {
+      console.log("Selected planet: " + (planet ? planet.name : "none"));
       if (planet) {
         this.unitPanel.show(planet.name, planet.units);
       } else {
@@ -80,6 +82,7 @@ class Game {
     this.useExpansion = data.isExpansion;
 
     this.map.loadPlanets(data.map);
+    this.unitPanel.refresh();
     this.turnOrder.next();
   }
 
@@ -117,6 +120,7 @@ class Game {
 
   initNewGame() {
     this.map.reset();
+    this.unitPanel.refresh();
 
     this.updatePlayersNumber();
     this.updateUseExpansion();
@@ -170,6 +174,7 @@ class Game {
       reset_map_button: () => {
         this.save("Backup");
         this.map.reset();
+        this.unitPanel.refresh();
       },
 
       reset_game_button: () => {
