@@ -77,7 +77,7 @@ class UnitPanel {
       typeof this.allUnits === "function" ? this.allUnits() : this.allUnits;
     let names;
     if (list) {
-      console.log("UnitPanel: using list of units", list);
+      //   console.log("UnitPanel: using list of units", list);
       names = list.slice();
       // keep showing units the planet has, even if they are not in the list
       // (for example expansion units after the expansion was switched off)
@@ -87,7 +87,7 @@ class UnitPanel {
         }
       });
     } else {
-      console.log("Using only units already on planet", list);
+      //   console.log("Using only units already on planet", list);
       names = Object.keys(this.units);
     }
     names.forEach((unit) => {

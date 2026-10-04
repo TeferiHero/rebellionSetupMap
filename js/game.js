@@ -38,7 +38,10 @@ class Game {
     this.turnOrder = new TurnOrder(this, document.getElementById("game_info"));
 
     // this.showStartMenu();
-    this.toggleGameInfo();
+    if (this.menuShown) {
+      this.toggleGameInfo();
+    }
+    // this.toggleGameInfo();
     this.showButtons();
     this.load();
   }
@@ -233,10 +236,10 @@ class Game {
   toggleGameInfo() {
     let header = document.getElementById("game_info_container"),
       next = document.getElementById("next_button");
+
     const hide = true;
     if (!hide) {
       const display = this.menuShown ? "none" : "flex";
-
       header.style.display = display;
       next.style.display = display;
     } else {

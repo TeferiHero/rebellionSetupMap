@@ -145,10 +145,10 @@ class GameMap {
       );
       return;
     }
-    this.unselectAllPlanets();
+    this.unselectAllPlanets(name);
     this.planetData[name][this.clickMode]();
 
-    if (this.onSelect) {
+    if (this.clickMode === "togglePlanetSelection" && this.onSelect) {
       this.onSelect(this.planetData[name]);
     }
 
@@ -195,9 +195,11 @@ class GameMap {
     }
   }
 
-  unselectAllPlanets() {
+  unselectAllPlanets(exception = "") {
     for (let i in this.planetData) {
-      this.planetData[i].unselectPlanetUnits();
+      if (i !== exception) {
+        this.planetData[i].unselectPlanetUnits();
+      }
     }
   }
 
@@ -225,7 +227,7 @@ class GameMap {
 
   setUnitMode() {
     this.body.className = "unit";
-    this.clickMode = "selectPlanetUnits";
+    this.clickMode = "togglePlanetSelection";
     this.hideProbeData();
     this.hideAllIcons();
   }

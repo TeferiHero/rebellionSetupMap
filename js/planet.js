@@ -346,6 +346,14 @@ class Planet {
     }
   }
 
+  togglePlanetSelection() {
+    if (this.selected) {
+      this.unselectPlanetUnits();
+    } else {
+      this.selectPlanetUnits();
+    }
+  }
+
   selectPlanetUnits() {
     this.selected = true;
     this.show("selection");
