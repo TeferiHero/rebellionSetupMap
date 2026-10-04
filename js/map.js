@@ -1,4 +1,4 @@
-class Map {
+class GameMap {
   constructor(saveCallback) {
     this.save = saveCallback;
     this.default = {
@@ -48,8 +48,8 @@ class Map {
         planet.innerHTML += '<g transform="translate(80,768) '+this.default.empire.transform+'" fill="#fff" stroke="none">'+this.default.empire.path+'</g>';
         planet.innerHTML += '<g transform="translate(40,808) '+this.default.probe.transform+'" fill="#fff" stroke="none">'+this.default.probe.path+'</g>';
         planet.innerHTML += '<g transform="translate(40,908) '+this.default.intel.transform+'" fill="#fff" stroke="none">'+this.default.intel.path+'</g>';
-        planet.innerHTML += '<g transform="translate(20,958) '+this.default.storm.transform+'" fill="#fff" stroke="none">'+this.default.storm.path+'</g>';
-        planet.innerHTML += '<g transform="translate(120,988) '+this.default.rebel_storm.transform+'" fill="#fff" stroke="none">'+this.default.rebel_storm.path+'</g>';*/
+        planet.innerHTML += '<g transform="translate(20,958) '+this.default.storm.transform+'" "#fff" stroke="none">'+this.default.storm.path+'</g>';
+        planet.innerHTML += '<g transform="translate(120,988) '+this.default.refill=bel_storm.transform+'" fill="#fff" stroke="none">'+this.default.rebel_storm.path+'</g>';*/
 
     //this.svg.select('#rebel01').transform('translate(120, 718) scale(0.035,-0.035)');
 
@@ -125,6 +125,15 @@ class Map {
     this.loadPlanets(planetData);
   }
 
+  getSelectedPlanet() {
+    for (let name in this.planetData) {
+      if (this.planetData[name].isSelected()) {
+        return this.planetData[name];
+      }
+    }
+    return undefined;
+  }
+
   toggleClicks(flag) {
     this.clicksAllowed = flag;
   }
@@ -136,7 +145,13 @@ class Map {
       );
       return;
     }
+    this.unselectAllPlanets();
     this.planetData[name][this.clickMode]();
+
+    if (this.onSelect) {
+      this.onSelect(this.planetData[name]);
+    }
+
     this.save();
   }
 
@@ -180,28 +195,37 @@ class Map {
     }
   }
 
+  unselectAllPlanets() {
+    for (let i in this.planetData) {
+      this.planetData[i].unselectPlanetUnits();
+    }
+  }
+
   //   Setting map modes
   setMapMode() {
     this.body.className = "loyalty";
     this.clickMode = "toggleLoyalty";
     this.hideProbeData();
+    this.unselectAllPlanets();
   }
 
   setSabotageMode() {
     this.body.className = "sabotage";
     this.clickMode = "toggleSabotage";
     this.hideProbeData();
+    this.unselectAllPlanets();
   }
 
   setProbeMode() {
     this.body.className = "probe";
     this.clickMode = "toggleProbeStatus";
     this.showProbeData();
+    this.unselectAllPlanets();
   }
 
   setUnitMode() {
     this.body.className = "unit";
-    this.clickMode = "toggleProbeStatus";
+    this.clickMode = "selectPlanetUnits";
     this.hideProbeData();
     this.hideAllIcons();
   }

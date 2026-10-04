@@ -15,6 +15,7 @@ body {
     overflow-x: hidden;
     /* cursor: url('../images/SSD_Cursor.png'), auto; */
     font-family: Montserrat, sans-serif;
+    color:#fff;
 
     display: flex;
     flex-direction: column;
@@ -313,4 +314,13 @@ div#build_queue {
     .button {
         cursor: pointer;
     }
+}
+
+
+.planet-selected {
+    filter: brightness(1.6) drop-shadow(0 0 6px #fc0) 
+            drop-shadow(0 0 10px #fc0)
+            drop-shadow(0 0 20px #fc0);;
+    opacity: 0.6 !important;               /* see note below */
+    transition: filter 0.2s;
 }

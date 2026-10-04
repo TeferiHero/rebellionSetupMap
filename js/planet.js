@@ -14,6 +14,14 @@ class Planet {
     let str =
       '<path id="BG_' + name + '" class="st45" d="' + planetData.bg + '"/>';
 
+    str +=
+      '<path id="SEL_' +
+      name +
+      '" d="' +
+      planetData.bg +
+      '" fill="none" ' +
+      'stroke="#ffcc00" stroke-width="4" stroke-linejoin="round" pointer-events="none"/>';
+
     // Set markers
     str += this.addObject("rebel", "loyalty", mapData.rebel);
     str += this.addObject("empire", "loyalty", mapData.empire);
@@ -44,6 +52,8 @@ class Planet {
 
     this.sabotage = this.planet.select("#sabotage_" + name);
 
+    this.selection = this.planet.select("#SEL_" + name);
+
     this.hideAllIcons();
     this.hideBackgrounds();
   }
@@ -56,9 +66,13 @@ class Planet {
     // Is planet under sabotage
     this.sabotageFlag = false;
 
+    this.units = {};
+
     // Not used
     // Show that in this system there is an opponent army
     this.underSiege = false;
+
+    this.selected = false;
 
     this.hideAllIcons();
     this.hideBackgrounds();
@@ -70,12 +84,15 @@ class Planet {
       loyalty: this.loyalty,
       probeStatus: this.probeStatus,
       sabotage: this.sabotageFlag,
+      units: this.units,
     };
   }
 
   load(data) {
     this.loyalty = data.loyalty;
     this.probeStatus = data.probeStatus;
+    this.units = data.units || {};
+
     this.sabotageFlag = !data.sabotageFlag;
     this.toggleSabotage();
   }
@@ -91,7 +108,7 @@ class Planet {
       data +
       ") " +
       obj.transform +
-      '" fill="#fff" stroke="none">' +
+      '" fill=#fff stroke="none">' +
       obj.path +
       "</g>"
     );
@@ -244,7 +261,12 @@ class Planet {
     if (this.bg !== undefined) {
       this.bg.attr({ fill: "#000", opacity: 0.25 });
     }
+    if (this.selection !== undefined) {
+      this.selected = false;
+      this.hide("selection");
+    }
   }
+
   toggleSabotage() {
     if (this.data.resource === undefined) {
       // No resources on this planet
@@ -322,6 +344,27 @@ class Planet {
         this.updateLoyalty();
         this.hide("intel");
     }
+  }
+
+  selectPlanetUnits() {
+    this.selected = true;
+    this.show("selection");
+    this.bg.addClass("planet-selected");
+  }
+
+  unselectPlanetUnits() {
+    this.selected = false;
+    this.hide("selection");
+    this.bg.removeClass("planet-selected");
+  }
+
+  isSelected() {
+    return this.selected;
+  }
+
+  changePlanetUnits(unit, newAmount) {
+    const next = Math.max(0, newAmount);
+    this.units[unit] = next;
   }
 
   getResources(ids) {
