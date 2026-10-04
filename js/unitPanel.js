@@ -54,6 +54,7 @@ class UnitPanel {
     this.allUnits = allUnits || null;
     this.getPlanets = getPlanets || null;
 
+    this.isOverview = true; // true = no planet selected, false = one planet selected
     this.units = null; // the dictionary being edited (null = overview)
     this.title = "";
     this.filter = "all"; // 'all' | 'empire' | 'rebel'
@@ -96,7 +97,11 @@ class UnitPanel {
 
   // Call after the planets were loaded or reset: goes back to the overview with fresh numbers
   refresh() {
-    this.clear();
+    if (this.isOverview) {
+      this.renderOverview();
+    } else {
+      this.render();
+    }
   }
 
   // 'all', 'empire' or 'rebel'
@@ -156,6 +161,7 @@ class UnitPanel {
   // ---------- overview (no planet selected) ----------
 
   renderOverview() {
+    this.isOverview = true;
     this.container.innerHTML = "";
 
     const heading = document.createElement("h3");
@@ -214,6 +220,7 @@ class UnitPanel {
   // ---------- one planet ----------
 
   render() {
+    this.isOverview = false;
     this.container.innerHTML = "";
     this.counters = {};
 

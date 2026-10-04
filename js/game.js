@@ -49,13 +49,14 @@ class Game {
   }
 
   save(name = "") {
-    let data = {
+    const data = {
       ...this.turnOrder.getState(),
       isAdvanced: this.isAdvanced,
       isExpansion: this.useExpansion,
       map: this.map.savePlanets(),
     };
     localStorage.setItem(`rebellionData${name}`, JSON.stringify(data));
+    return data;
   }
 
   load(name = "") {
@@ -82,8 +83,37 @@ class Game {
     this.useExpansion = data.isExpansion;
 
     this.map.loadPlanets(data.map);
-    this.unitPanel.refresh();
+    this.unitPanel.clear();
     this.turnOrder.next();
+  }
+
+  exportSave() {
+    const data = this.save();
+    const json = JSON.stringify(data, null, 2);
+
+    const blob = new Blob([json], {
+      type: "application/json",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "rebellion-save.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async importSave(file) {
+    try {
+      const data = JSON.parse(await file.text());
+      if (!data || typeof data !== "object" || !("map" in data)) {
+        throw new Error("this is not a save file");
+      }
+      localStorage.setItem("rebellionData", JSON.stringify(data));
+      this.load();
+    } catch (e) {
+      alert("Could not import: " + e.message);
+    }
   }
 
   updatePlayersNumber() {
@@ -116,11 +146,12 @@ class Game {
     } else {
       this.useExpansion = false;
     }
+    this.unitPanel.refresh();
   }
 
   initNewGame() {
     this.map.reset();
-    this.unitPanel.refresh();
+    this.unitPanel.clear();
 
     this.updatePlayersNumber();
     this.updateUseExpansion();
@@ -158,6 +189,8 @@ class Game {
   // }
 
   showButtons() {
+    const imported_file_picker = document.getElementById("import_file");
+
     const buttons = {
       next_button: () => this.turnOrder.next(),
       menu_button: () => this.toggleGameInfo(),
@@ -174,7 +207,7 @@ class Game {
       reset_map_button: () => {
         this.save("Backup");
         this.map.reset();
-        this.unitPanel.refresh();
+        this.unitPanel.clear();
       },
 
       reset_game_button: () => {
@@ -186,7 +219,16 @@ class Game {
       useExpansion: () => this.updateUseExpansion(),
       pl2: () => this.setPlayersNumber(2),
       pl4: () => this.setPlayersNumber(4),
+      export_save_button: () => this.exportSave(),
+      import_save_button: () => imported_file_picker.click(),
     };
+
+    imported_file_picker.addEventListener("change", () => {
+      if (imported_file_picker.files[0]) {
+        this.importSave(imported_file_picker.files[0]);
+      }
+      imported_file_picker.value = ""; // lets you pick the same file again later
+    });
 
     Object.entries(buttons).forEach(([id, action]) => {
       Game.showButton(id, action);
