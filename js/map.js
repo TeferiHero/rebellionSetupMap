@@ -96,6 +96,14 @@ class GameMap {
     return this.planetData;
   }
 
+  setRandomPlanetsLoyalty(planetData, planetsList, planetsNumber, loyaltyCode) {
+    const shuffled = [...planetsList].sort(() => Math.random() - 0.5);
+    shuffled.slice(0, planetsNumber).forEach((name) => {
+      planetData[name].loyalty = loyaltyCode;
+    });
+    return shuffled.slice(planetsNumber);
+  }
+
   setStartingLoyalty() {
     const planetData = Object.fromEntries(
       Object.keys(this.planets).map((name) => [
@@ -115,17 +123,28 @@ class GameMap {
       "Sullust",
       "Saleucami",
       "Rodia",
-      "Malastare",
+      //   "Malastare",
       "Mustafar",
     ];
-    empirePlanets.forEach((name) => {
-      planetData[name].loyalty = 3;
-    });
+
+    // empirePlanets.forEach((name) => {
+    //   planetData[name].loyalty = 3;
+    // });
+
+    const leftoverEmpirePlanets = this.setRandomPlanetsLoyalty(
+      planetData,
+      empirePlanets,
+      3,
+      4,
+    );
+    this.setRandomPlanetsLoyalty(planetData, leftoverEmpirePlanets, 2, 3);
 
     const rebelPlanets = ["Kashyyyk", "Naboo", "Ryloth", "MonCalamari"];
-    rebelPlanets.forEach((name) => {
-      planetData[name].loyalty = 1;
-    });
+
+    this.setRandomPlanetsLoyalty(planetData, rebelPlanets, 3, 1);
+    // rebelPlanets.forEach((name) => {
+    //   planetData[name].loyalty = 1;
+    // });
 
     this.loadPlanets(planetData);
   }

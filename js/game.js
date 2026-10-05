@@ -178,6 +178,10 @@ class Game {
         this.save("Backup");
         this.map.setStartingLoyalty();
       },
+      // set_starting_loyalty_button: () => {
+      //   this.save("Backup");
+      //   this.map.setStartingLoyalty();
+      // },
 
       reset_map_button: () => {
         this.save("Backup");
