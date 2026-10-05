@@ -283,11 +283,117 @@ const UNIT_SHORT = {
 };
 
 // Max number of each unit on the whole map. Edit any entry, e.g. UNIT_LIMITS["Death Star"] = 1;
+const MAX_UNIT_LIMIT = 99;
 const DEFAULT_UNIT_LIMIT = 9;
 const UNIT_LIMITS = {};
+
 UNITS.forEach(function (unit) {
   UNIT_LIMITS[unit.name] = DEFAULT_UNIT_LIMIT;
 });
+
+function getUnitLimit(name) {
+  return name in UNIT_LIMITS ? UNIT_LIMITS[name] : DEFAULT_UNIT_LIMIT;
+}
+
+function setUnitLimit(name, value) {
+  UNIT_LIMITS[name] = Math.max(0, Math.min(MAX_UNIT_LIMIT, value));
+}
+
+// A preset gives every unit `fill`, except the ones listed in `overrides`.
+// These are examples: replace the numbers with the ones you actually want.
+const UNIT_PRESETS = [
+  {
+    id: "setup",
+    name: "Setup (base)",
+    fill: 0,
+    overrides: {
+      // Empire
+      "Star Destroyer": 3,
+      "Assault Carrier": 3,
+      "TIE Fighter": 12,
+      "AT-AT": 1,
+      "AT-ST": 5,
+      Stormtrooper: 12,
+      "Death Star": 1,
+      // Rebels
+      "Corellian Corvette": 1,
+      "Rebel Transport": 1,
+      "X-Wing": 2,
+      "Y-Wing": 2,
+      Airspeeder: 2,
+      "Rebel Trooper": 6,
+    },
+  },
+  {
+    id: "setup_expansion",
+    name: "Setup (Rise of the Empire)",
+    fill: 0,
+    overrides: {
+      // Empire
+      "Star Destroyer": 3,
+      "Assault Carrier": 3,
+      "TIE Fighter": 12,
+      "TIE Striker": 3,
+      "AT-AT": 1,
+      "AT-ST": 4,
+      Stormtrooper: 13,
+      "Assault Tank": 2,
+      "Death Star Under Construction": 1,
+      // Rebels
+      "Corellian Corvette": 1,
+      "Rebel Transport": 1,
+      "X-Wing": 1,
+      "Y-Wing": 1,
+      "U-Wing": 1,
+      Airspeeder: 2,
+      "Rebel Trooper": 5,
+      "Rebel Vanguard": 1,
+    },
+  },
+  // { id: "default", name: "Default (9 each)", fill: 9 },
+  // { id: "low", name: "Low (5 each)", fill: 5 },
+  {
+    id: "max",
+    name: "Maximum",
+    fill: MAX_UNIT_LIMIT,
+    overrides: { "Death Star": 1, "Super Star Destroyer": 1 },
+  },
+];
+
+// Full { unitName: limit } dictionary for a preset (covers every unit, expansion or not)
+function resolvePreset(preset) {
+  const out = {};
+  UNITS.forEach(function (unit) {
+    const o = preset.overrides;
+    out[unit.name] = o && unit.name in o ? o[unit.name] : preset.fill;
+  });
+  return out;
+}
+
+function applyUnitPreset(id) {
+  const preset = UNIT_PRESETS.find(function (p) {
+    return p.id === id;
+  });
+  if (!preset) {
+    return;
+  }
+  const limits = resolvePreset(preset);
+  Object.keys(limits).forEach(function (name) {
+    setUnitLimit(name, limits[name]);
+  });
+}
+
+// The preset the current limits are identical to, or null
+function findMatchingPreset() {
+  return (
+    UNIT_PRESETS.find(function (preset) {
+      const limits = resolvePreset(preset);
+      return UNITS.every(function (unit) {
+        return getUnitLimit(unit.name) === limits[unit.name];
+      });
+    }) || null
+  );
+}
 
 function getUnitLimit(name) {
   return name in UNIT_LIMITS ? UNIT_LIMITS[name] : DEFAULT_UNIT_LIMIT;

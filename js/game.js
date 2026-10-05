@@ -23,6 +23,14 @@ class Game {
       () => Object.values(this.map.getPlanetsData() || {}),
     );
 
+    this.limitsPanel = new LimitsPanel(
+      () => {
+        this.unitPanel.refresh(); // rows and +/- states depend on the limits
+        this.save();
+      },
+      (faction) => getUnitNames(this.useExpansion, faction),
+    );
+
     this.map.onSelect = (planet) => {
       console.log("Selected planet: " + (planet ? planet.name : "none"));
       if (planet) {
@@ -48,13 +56,14 @@ class Game {
     }
     // this.toggleTurnInfo();
     this.showButtons();
-    this.load();
+    this.loadFromLinkOrStorage();
     this.map.setClicksAllowed(true);
   }
 
   save(name = "") {
     const data = {
       ...this.turnOrder.getState(),
+      unitLimits: { ...UNIT_LIMITS },
       isAdvanced: this.isAdvanced,
       isExpansion: this.useExpansion,
       map: this.map.savePlanets(),
@@ -86,9 +95,47 @@ class Game {
     this.isAdvanced = data.isAdvanced;
     this.useExpansion = data.isExpansion;
 
+    if (data.unitLimits) {
+      Object.assign(UNIT_LIMITS, data.unitLimits);
+    }
+    this.limitsPanel.render();
+
     this.map.loadPlanets(data.map);
     this.unitPanel.clear();
     this.turnOrder.next();
+  }
+
+  async copyShareLink() {
+    const code = await encodeState(this.save());
+    const url = location.origin + location.pathname + "#s=" + code;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("Link copied (" + url.length + " characters)");
+    } catch (e) {
+      prompt("Copy this link:", url); // clipboard needs https or localhost
+    }
+  }
+
+  async loadFromLinkOrStorage() {
+    const match = location.hash.match(/^#s=(.+)$/);
+    if (!match) {
+      this.load();
+      return;
+    }
+    try {
+      const data = await decodeState(match[1]);
+      if (!data || typeof data !== "object" || !("map" in data)) {
+        throw new Error("not a game link");
+      }
+      if (confirm("Load the shared game? It replaces your current game.")) {
+        this.save("Backup"); // "Undo reset" can bring the old game back
+        localStorage.setItem("rebellionData", JSON.stringify(data));
+      }
+    } catch (e) {
+      alert("Could not open the link: " + e.message);
+    }
+    history.replaceState(null, "", location.pathname); // so a refresh doesn't ask again
+    this.load();
   }
 
   exportSave() {
@@ -151,6 +198,7 @@ class Game {
       this.useExpansion = false;
     }
     this.unitPanel.refresh();
+    this.limitsPanel?.render();
   }
 
   initNewGame() {
@@ -160,6 +208,8 @@ class Game {
     this.updatePlayersNumber();
     this.updateUseExpansion();
 
+    applyUnitPreset("setup");
+    this.limitsPanel.render();
     this.turnOrder.start("init");
   }
 
@@ -198,6 +248,7 @@ class Game {
       useExpansion: () => this.updateUseExpansion(),
       pl2: () => this.setPlayersNumber(2),
       pl4: () => this.setPlayersNumber(4),
+      share_link_button: () => this.copyShareLink(),
       export_save_button: () => this.exportSave(),
       import_save_button: () => imported_file_picker.click(),
     };
