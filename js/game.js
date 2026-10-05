@@ -46,6 +46,7 @@ class Game {
     if (this.menuShown) {
       this.toggleTurnInfo();
     }
+    this.map.setClicksAllowed(true);
     // this.toggleTurnInfo();
     this.showButtons();
     this.load();
@@ -162,35 +163,6 @@ class Game {
     this.turnOrder.start("init");
   }
 
-  // showStartMenu() {
-  //     document.getElementsByClassName('button')[0].style.opacity = 1;
-  //     document.getElementsByClassName('button')[1].style.opacity = 1;
-  //     document.getElementsByClassName('continue')[0].addEventListener("click",function(){
-  //         this.closeMenu();
-  //         this.load();
-  //     }.bind(this));
-  //     document.getElementsByClassName('newgame')[0].addEventListener("click",function(){
-  //         this.closeMenu();
-  //         this.initNewGame();
-  //     }.bind(this));
-  // }
-
-  // closeMenu() {
-  //     let mask = document.getElementsByClassName('mask')[0];
-  //     mask.style.opacity = 0;
-  //     setTimeout(function () {
-  //         mask.style.display = "none";
-  //     },500);
-
-  //     /*
-  //     this.nextButton = document.getElementById('next_button');
-  //     this.nextButton.style.display = 'flex';
-
-  //     this.nextButton.addEventListener("click",);
-  //     */
-  //     showNavs();
-  // }
-
   showButtons() {
     const imported_file_picker = document.getElementById("import_file");
 
@@ -236,51 +208,6 @@ class Game {
     Object.entries(buttons).forEach(([id, action]) => {
       Game.showButton(id, action);
     });
-
-    // Game.showButton('next_button', function(){
-    //     this.turnOrder.next();
-    // }.bind(this));
-    // Game.showButton('menu_button', function(){
-    //     this.toggleTurnInfo();
-    // }.bind(this));
-    // Game.showButton('loyalty_nav', function(){
-    //     this.map.setMapMode();
-    // }.bind(this));
-    // Game.showButton('sabotage_nav', function(){
-    //     this.map.setSabotageMode();
-    // }.bind(this));
-    // Game.showButton('probe_nav', function(){
-    //     this.map.setProbeMode();
-    // }.bind(this));
-    // Game.showButton('unit_nav', function(){
-    //     this.map.setUnitMode();
-    // }.bind(this));
-
-    // Game.showButton('set_starting_loyalty_button', function(){
-    //     this.save('Backup');
-    //     this.map.setStartingLoyalty();
-    // }.bind(this));
-    // Game.showButton('reset_map_button', function(){
-    //     this.save('Backup');
-    //     this.map.reset();
-    // }.bind(this));
-    // Game.showButton('reset_game_button', function(){
-    //     this.save('Backup');
-    //     this.initNewGame();
-    // }.bind(this));
-
-    // Game.showButton('undo_reset_button', function(){
-    //     this.load('Backup');
-    // }.bind(this));
-    // Game.showButton('useExpansion', function(){
-    //     this.updateUseExpansion();
-    // }.bind(this));
-    // Game.showButton('pl2', function(){
-    //     this.setPlayersNumber(2);
-    // }.bind(this));
-    // Game.showButton('pl4', function(){
-    //     this.setPlayersNumber(4);
-    // }.bind(this));
   }
 
   toggleTurnInfo() {
@@ -301,7 +228,7 @@ class Game {
     this.menuShown = !this.menuShown;
 
     if (!this.menuShown) {
-      this.map.toggleClicks(true);
+      this.map.setClicksAllowed(true);
     }
   }
 

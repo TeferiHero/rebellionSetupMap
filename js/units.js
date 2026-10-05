@@ -40,6 +40,39 @@ const UNITS = [
   { name: "Golan Arms Turret", faction: "rebel", expansion: true },
 ];
 
+const UNIT_SHORT = {
+  "TIE Fighter": "TIE",
+  "Assault Carrier": "ACar",
+  "Star Destroyer": "SD",
+  "Super Star Destroyer": "SSD",
+  "Death Star": "DS",
+  "Death Star Under Construction": "DS\u2692",
+  Stormtrooper: "STrp",
+  "AT-ST": "ATST",
+  "AT-AT": "ATAT",
+  "TIE Striker": "T-S",
+  Interdictor: "INT",
+  "Assault Tank": "ATnk",
+  "Shield Bunker": "SBnk",
+  "X-Wing": "X-W",
+  "Y-Wing": "Y-W",
+  "Rebel Transport": "RTra",
+  "Corellian Corvette": "CCor",
+  "Mon Calamari Cruiser": "MCC",
+  "Rebel Trooper": "RTrp",
+  Airspeeder: "ASpd",
+  "Shield Generator": "SGen",
+  "Ion Cannon": "IonC",
+  "U-Wing": "U-W",
+  "Nebulon-B Frigate": "NebB",
+  "Rebel Vanguard": "RVan",
+  "Golan Arms Turret": "GTrt",
+};
+
+function getUnitShort(name) {
+  return UNIT_SHORT[name] || name.slice(0, 3).toUpperCase();
+}
+
 function getUnits(useExpansion, faction) {
   return UNITS.filter(function (unit) {
     return (

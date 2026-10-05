@@ -35,6 +35,9 @@ class Planet {
     // Add resource icons
     str += this.addResourceIcons();
 
+    // A layer for planet units TODO move to function
+    str += '<g id="units_' + name + '" pointer-events="none"></g>';
+
     this.planetContainer.innerHTML += str;
 
     // Init hovers
@@ -53,6 +56,8 @@ class Planet {
     this.sabotage = this.planet.select("#sabotage_" + name);
 
     this.selection = this.planet.select("#SEL_" + name);
+    this.unitsLayer = this.planet.select("#units_" + name);
+    this.renderUnits();
 
     this.hideAllIcons();
     this.hideBackgrounds();
@@ -67,6 +72,7 @@ class Planet {
     this.sabotageFlag = false;
 
     this.units = {};
+    this.renderUnits();
 
     // Not used
     // Show that in this system there is an opponent army
@@ -95,6 +101,7 @@ class Planet {
 
     this.sabotageFlag = !data.sabotageFlag;
     this.toggleSabotage();
+    this.renderUnits();
   }
 
   addObject(key, translateKey, obj) {
@@ -378,6 +385,97 @@ class Planet {
   changePlanetUnits(unit, newAmount) {
     const next = Math.max(0, newAmount);
     this.units[unit] = next;
+    this.renderUnits();
+  }
+
+  // Top-left corner of slot number i
+  getUnitSlot(i) {
+    const size = Planet.UNIT_SIZE,
+      gap = Planet.UNIT_GAP;
+
+    // 1) hand-placed slots from map.js:  unitSlots: ["100, 200", "135, 200"]
+    const slots = this.data.unitSlots || [];
+    if (i < slots.length) {
+      const s = slots[i];
+      const [x, y] = Array.isArray(s) ? s : String(s).split(",").map(Number);
+      return [x, y];
+    }
+
+    // 2) automatic grid inside the planet's outline
+    const n = i - slots.length;
+    const box = this.bg.node.getBBox();
+    const cols = Math.max(
+      1,
+      Math.max(4, Math.floor((box.width - 20) / (size + gap))),
+    );
+    return [
+      box.x + 10 + (n % cols) * (size + gap),
+      box.y + 10 + Math.floor(n / cols) * (size + gap),
+    ];
+  }
+
+  renderUnits() {
+    // if (!unitsMode) {
+    //   this.unitsLayer.node.innerHTML = str;
+    // }
+    if (!this.unitsLayer) {
+      return;
+    }
+    const size = Planet.UNIT_SIZE;
+    const order = typeof UNITS !== "undefined" ? UNITS.map((u) => u.name) : [];
+    const rank = (u) => (order.indexOf(u) < 0 ? 999 : order.indexOf(u));
+
+    const present = Object.keys(this.units)
+      .filter((u) => this.units[u] > 0)
+      .sort((a, b) => rank(a) - rank(b));
+
+    let str = "";
+    present.forEach((unit, i) => {
+      const [x, y] = this.getUnitSlot(i);
+      const faction =
+        typeof getUnitFaction === "function" ? getUnitFaction(unit) : null;
+      const fill =
+        faction === "empire"
+          ? "#5a1414"
+          : faction === "rebel"
+            ? "#7a4a00"
+            : "#333";
+      const label =
+        typeof getUnitShort === "function" ? getUnitShort(unit) : unit;
+
+      str +=
+        '<g class="unit-mode-dependent" transform="translate(' +
+        x +
+        "," +
+        y +
+        ')">' +
+        '<rect width="' +
+        size +
+        '" height="' +
+        size +
+        '" rx="3" fill="' +
+        fill +
+        '" stroke="#fff" stroke-width="1.5"/>' +
+        '<text x="' +
+        size / 2 +
+        '" y="' +
+        (size / 2 - 4) +
+        '" text-anchor="middle" dy=".35em" font-size="20" fill="#fff" stroke="none">' +
+        label +
+        "</text>" +
+        '<text x="' +
+        (size - 3) +
+        '" y="' +
+        (size - 3) +
+        '" text-anchor="end" font-size="20" font-weight="bold" fill="#fff" ' +
+        'stroke="#000" stroke-width="3" paint-order="stroke">' +
+        this.units[unit] +
+        "</text>" +
+        "<title>" +
+        unit +
+        "</title></g>";
+    });
+    this.unitsLayer.node.innerHTML = str;
   }
 
   getResources(ids) {
@@ -429,3 +527,6 @@ class Planet {
     }
   }
 }
+
+Planet.UNIT_SIZE = 60;
+Planet.UNIT_GAP = 4;
