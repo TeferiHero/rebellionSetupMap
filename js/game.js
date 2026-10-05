@@ -57,7 +57,6 @@ class Game {
     // this.toggleTurnInfo();
     this.showButtons();
     this.loadFromLinkOrStorage();
-    this.map.setClicksAllowed(true);
   }
 
   save(name = "") {

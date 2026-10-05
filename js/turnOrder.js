@@ -232,7 +232,7 @@ class TurnOrder {
             "Place a <strong>subjugation marker</strong> in the <strong>first 2 Imperial</strong> systems drawn and " +
             "an <strong>Imperial loyalty marker</strong> in each of the <strong>other 3 Imperial</strong> systems drawn.",
           modes: [
-            ["map", "setClicksAllowed", true],
+            // ["map", "setClicksAllowed", true],
             ["map", "setClickMode", "toggleLoyalty"],
             ["map", "setStartingLoyalty"],
           ],
@@ -243,7 +243,7 @@ class TurnOrder {
           info:
             "Players must agree to choose either expansion set of starting units, or base game one.<br />" +
             "Both modes will be shown next.",
-          modes: [["map", "setClicksAllowed", false]],
+          // modes: [["map", "setClicksAllowed", false]],
           next: "set_ships_empire",
           isExpansion: true,
         },
@@ -253,7 +253,7 @@ class TurnOrder {
             "<strong>Base game:</strong> The Imperial player receives 3 Star Destroyers, 3 Assault Carriers, 12 TIE Fighters, 12 Stormtroopers, 5 AT-STs, 1 AT-AT,<br />" +
             "and 1 Death Star. These units can be placed in any system that has an Imperial loyalty marker or subjugation marker. <br />" +
             "At least 1 ground unit must be placed in each Imperial system.",
-          modes: [["map", "setClicksAllowed", false]],
+          // modes: [["map", "setClicksAllowed", false]],
           next: "set_ships_expansion_empire",
         },
 
@@ -331,7 +331,7 @@ class TurnOrder {
           info:
             "<strong>Command phase.</strong><br />" + "Order: Rebel -> Empire",
           modes: [
-            ["map", "setClicksAllowed", true],
+            // ["map", "setClicksAllowed", true],
             ["map", "setClickMode", "toggleLoyalty"],
           ],
           next: null,
@@ -343,7 +343,7 @@ class TurnOrder {
             'Order: <span class="admiral">Rebel Admiral</span>, <span class="admiral">Empire Admiral</span>, <br />' +
             '<span class="general">Empire General</span>, <span class="general">Rebel General</span><br />',
           modes: [
-            ["map", "setClicksAllowed", true],
+            // ["map", "setClicksAllowed", true],
             ["map", "setClickMode", "toggleLoyalty"],
           ],
           next: null,
@@ -358,7 +358,7 @@ class TurnOrder {
           info:
             "<strong>Refresh phase.</strong><br />" +
             '<strong>Rebel player</strong>: "Start of Refresh Phase" objectives',
-          modes: [["map", "setClicksAllowed", false]],
+          // modes: [["map", "setClicksAllowed", false]],
           next: "retrieve_leaders",
         },
 
@@ -388,7 +388,7 @@ class TurnOrder {
             "<strong>Refresh phase.</strong><br />" +
             "<strong>Imperial player</strong> draws two probe cards",
           modes: [
-            ["map", "setClicksAllowed", true],
+            // ["map", "setClicksAllowed", true],
             ["map", "setClickMode", "toggleLoyalty"],
           ],
           next: "draw_objective",
@@ -399,7 +399,7 @@ class TurnOrder {
             "<strong>Refresh phase.</strong><br />" +
             '<strong>Imperial <span class="general">General</span></strong> draws two probe cards',
           modes: [
-            ["map", "setClicksAllowed", true],
+            // ["map", "setClicksAllowed", true],
             ["map", "setClickMode", "toggleLoyalty"],
           ],
           next: "draw_objective",
@@ -409,7 +409,7 @@ class TurnOrder {
           info:
             "<strong>Refresh phase.</strong><br />" +
             "The <strong>Rebel player</strong> draws one objective card and adds it to his hand.",
-          modes: [["map", "setClicksAllowed", false]],
+          // modes: [["map", "setClicksAllowed", false]],
           next: "advance_time_marker",
         },
 
