@@ -218,9 +218,18 @@ class Game {
     const buttons = {
       next_button: () => this.turnOrder.next(),
       menu_button: () => this.toggleTurnInfo(),
-      loyalty_nav: () => this.map.setMapMode(),
-      sabotage_nav: () => this.map.setSabotageMode(),
-      probe_nav: () => this.map.setProbeMode(),
+      loyalty_nav: () => {
+        this.map.setMapMode();
+        this.unitPanel.clear();
+      },
+      sabotage_nav: () => {
+        this.map.setSabotageMode();
+        this.unitPanel.clear();
+      },
+      probe_nav: () => {
+        this.map.setProbeMode();
+        this.unitPanel.clear();
+      },
       unit_nav: () => this.map.setUnitMode(),
 
       set_starting_loyalty_button: () => {
