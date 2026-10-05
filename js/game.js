@@ -46,10 +46,10 @@ class Game {
     if (this.menuShown) {
       this.toggleTurnInfo();
     }
-    this.map.setClicksAllowed(true);
     // this.toggleTurnInfo();
     this.showButtons();
     this.load();
+    this.map.setClicksAllowed(true);
   }
 
   save(name = "") {

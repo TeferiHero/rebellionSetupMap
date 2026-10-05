@@ -185,9 +185,8 @@ class GameMap {
 
   //   Probe data
 
-  hideProbeData() {
+  updateLoyalty() {
     for (let i in this.planetData) {
-      this.planetData[i].hideProbeData();
       this.planetData[i].updateLoyalty();
     }
   }
@@ -216,20 +215,23 @@ class GameMap {
   setMapMode() {
     this.body.className = "loyalty-mode";
     this.clickMode = "toggleLoyalty";
-    this.hideProbeData();
+    this.updateLoyalty();
     this.unselectAllPlanets();
   }
 
   setSabotageMode() {
     this.body.className = "sabotage-mode";
     this.clickMode = "toggleSabotage";
-    this.hideProbeData();
+    this.updateLoyalty();
     this.unselectAllPlanets();
   }
 
   setProbeMode() {
     this.body.className = "probe-mode";
     this.clickMode = "toggleProbeStatus";
+
+    this.updateLoyalty();
+
     this.showProbeData();
     this.unselectAllPlanets();
   }
@@ -237,7 +239,7 @@ class GameMap {
   setUnitMode() {
     this.body.className = "unit-mode";
     this.clickMode = "togglePlanetSelection";
-    this.hideProbeData();
+    this.updateLoyalty();
     this.hideAllIcons();
   }
 

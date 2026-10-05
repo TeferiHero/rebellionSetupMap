@@ -58,7 +58,7 @@
 .loyalty-mode .loyalty-mode-dependent,
 .sabotage-mode .sabotage-mode-dependent,
 .probe-mode .probe-mode-dependent {
-  display: block;
+  /* display: block; */
   visibility: visible;
 }
 

@@ -43,6 +43,11 @@
   background-color: rgba(255, 204, 0, 0.18);
 }
 
+.unit-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .unit-filter {
   display: flex;
   gap: 6px;

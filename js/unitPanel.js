@@ -59,11 +59,17 @@ class UnitPanel {
     this.title = "";
     this.filter = "all"; // 'all' | 'empire' | 'rebel'
     this.counters = {}; // unit name -> the <span> that shows its number
+    this.buttons = {};
+
     // (a plain object: this project defines its own class Map)
     this.summaryEl = null; // element that lists the units with a number above 0
 
     // one listener for all buttons
     this.container.addEventListener("click", (e) => {
+      if (e.target.closest("button[data-clear]")) {
+        this.clearAll();
+        return;
+      }
       const filterBtn = e.target.closest("button[data-filter]");
       if (filterBtn) {
         this.setFilter(filterBtn.dataset.filter);
@@ -91,6 +97,7 @@ class UnitPanel {
   clear() {
     this.units = null;
     this.counters = {};
+    this.buttons = {};
     this.summaryEl = null;
     this.renderOverview();
   }
@@ -114,17 +121,75 @@ class UnitPanel {
     }
   }
 
-  // Add delta to a unit's number (never below 0)
+  // Add delta to a unit's number (never below 0, never above the map-wide limit)
   change(unit, delta) {
-    const next = Math.max(0, (this.units[unit] || 0) + delta);
+    const current = this.units[unit] || 0;
+    const next = Math.min(this.getMax(unit), Math.max(0, current + delta));
+    if (next === current) {
+      return;
+    }
     this.units[unit] = next;
 
     const counter = this.counters[unit];
     if (counter) {
       counter.textContent = next;
     }
+    this.updateButtons(unit);
     this.renderSummary();
     this.onChange(unit, next);
+  }
+
+  getLimit(unit) {
+    return typeof getUnitLimit === "function" ? getUnitLimit(unit) : Infinity;
+  }
+
+  // How many of this unit are on all the OTHER planets
+  getOthers(unit) {
+    let sum = 0;
+    (this.getPlanets ? this.getPlanets() || [] : []).forEach((planet) => {
+      if (planet.units && planet.units !== this.units) {
+        sum += planet.units[unit] || 0;
+      }
+    });
+    return sum;
+  }
+
+  // The highest number this planet can have of the unit
+  // (if loaded data is already over the limit, the current number stays allowed)
+  getMax(unit) {
+    const current = this.units[unit] || 0;
+    return Math.max(current, this.getLimit(unit) - this.getOthers(unit));
+  }
+
+  // Gray out - at 0 and + at the limit
+  updateButtons(unit) {
+    const b = this.buttons[unit];
+    if (!b) {
+      return;
+    }
+    const current = this.units[unit] || 0;
+    b.minus.disabled = current <= 0;
+    b.plus.disabled = current >= this.getMax(unit);
+  }
+
+  // Set every unit on the selected planet to 0
+  clearAll() {
+    if (!this.units) {
+      return;
+    }
+    // const names = Object.keys(this.units).filter((u) => this.units[u] > 0);
+    const names = this.getNames(this.units).filter((u) => this.units[u] > 0);
+    if (names.length === 0) {
+      return;
+    }
+    if (!confirm("Delete all units on " + this.title + "?")) {
+      return;
+    }
+    names.forEach((unit) => {
+      this.units[unit] = 0;
+      this.onChange(unit, 0); // updates the planet, redraws its squares, saves
+    });
+    this.render();
   }
 
   // Does this unit belong to the faction that is currently shown?
@@ -225,6 +290,7 @@ class UnitPanel {
     this.isOverview = false;
     this.container.innerHTML = "";
     this.counters = {};
+    this.buttons = {};
 
     const heading = document.createElement("h3");
     heading.textContent = this.title;
@@ -241,6 +307,14 @@ class UnitPanel {
     // editable rows
     this.container.appendChild(this.makeSubheading("Edit units"));
     this.getNames(this.units).forEach((unit) => {
+      // other planets already hold every copy: no row here
+      if (
+        (this.units[unit] || 0) === 0 &&
+        this.getOthers(unit) >= this.getLimit(unit)
+      ) {
+        return;
+      }
+
       const row = document.createElement("div");
       row.className = "unit-row";
 
@@ -248,17 +322,26 @@ class UnitPanel {
       label.className = "unit-name";
       label.textContent = unit;
 
-      const minus = this.makeButton(unit, -1, "\u2212"); // minus sign
+      const minus = this.makeButton(unit, -1, "\u2212");
       const plus = this.makeButton(unit, 1, "+");
 
       const count = document.createElement("span");
       count.className = "unit-count";
       count.textContent = this.units[unit] || 0;
       this.counters[unit] = count;
+      this.buttons[unit] = { minus, plus };
 
       row.append(label, minus, count, plus);
       this.container.appendChild(row);
+      this.updateButtons(unit);
     });
+
+    const clearBtn = document.createElement("button");
+    clearBtn.type = "button";
+    clearBtn.className = "unit-clear-btn button";
+    clearBtn.dataset.clear = "1";
+    clearBtn.textContent = "Delete all units";
+    this.container.appendChild(clearBtn);
 
     this.renderSummary();
   }

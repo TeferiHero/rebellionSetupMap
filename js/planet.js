@@ -29,14 +29,24 @@ class Planet {
     str += this.addObject("rebel_storm", "loyalty", mapData.rebel_storm);
     str += this.addObject("chewi", "loyalty", mapData.chewi);
 
-    str += this.addObject("probe", "probe", mapData.probe);
-    str += this.addObject("intel", "probe", mapData.intel);
+    str += this.addObject(
+      "probe",
+      "probe",
+      mapData.probe,
+      "probe-mode-dependent",
+    );
+    str += this.addObject(
+      "intel",
+      "probe",
+      mapData.intel,
+      "probe-mode-dependent",
+    );
 
     // Add resource icons
     str += this.addResourceIcons();
 
     // A layer for planet units TODO move to function
-    str += '<g id="units_' + name + '" pointer-events="none"></g>';
+    // str += '<g id="units_' + name + '" pointer-events="none"></g>';
 
     this.planetContainer.innerHTML += str;
 
@@ -56,7 +66,15 @@ class Planet {
     this.sabotage = this.planet.select("#sabotage_" + name);
 
     this.selection = this.planet.select("#SEL_" + name);
-    this.unitsLayer = this.planet.select("#units_" + name);
+
+    const unitsNode = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "g",
+    );
+    unitsNode.setAttribute("id", "units_" + name);
+    document.getElementById("UnitLayer").appendChild(unitsNode);
+    this.unitsLayer = Snap(unitsNode);
+    // this.unitsLayer = this.planet.select("#units_" + name);
     this.renderUnits();
 
     this.hideAllIcons();
@@ -99,15 +117,23 @@ class Planet {
     this.probeStatus = data.probeStatus;
     this.units = data.units || {};
 
-    this.sabotageFlag = !data.sabotageFlag;
+    this.sabotageFlag = !data.sabotage;
     this.toggleSabotage();
+    console.log(
+      "toggling sabotage on" + this.name + " value: " + this.sabotageFlag,
+    );
+    console.log(data);
     this.renderUnits();
   }
 
-  addObject(key, translateKey, obj) {
+  addObject(key, translateKey, obj, mode_dependent = "") {
     const data = this.data[translateKey];
+    let mode_dependent_str =
+      mode_dependent !== "" ? 'class="' + mode_dependent + '" ' : "";
     return (
-      '<g id="' +
+      "<g " +
+      mode_dependent_str +
+      ' id="' +
       key +
       "_" +
       this.name +
@@ -225,7 +251,7 @@ class Planet {
 
     // Sabotage marker
     str +=
-      '<g id="sabotage_' +
+      '<g class="loyalty-mode-dependent sabotage-mode-dependent probe-mode-dependent" id="sabotage_' +
       name +
       '">' +
       '<rect x="' +
@@ -261,7 +287,7 @@ class Planet {
     this.hide("probe");
     this.hide("intel");
 
-    this.hide("sabotage");
+    // this.hide("sabotage");
   }
 
   hideBackgrounds() {
@@ -442,27 +468,49 @@ class Planet {
             : "#333";
       const label =
         typeof getUnitShort === "function" ? getUnitShort(unit) : unit;
+      const resInfo =
+        typeof getUnitResourceInfo === "function"
+          ? getUnitResourceInfo(unit)
+          : null;
+      const resIcon = resInfo
+        ? // ? this.resourceShape(resInfo, 3, 3, size * 0.3) // x, y offset and size of the icon
+          this.resourceShape(resInfo, 2, 2, size - 4) // x, y offset and size of the icon
+        : "";
+      const nameStroke = "#fff";
+      // const nameStroke = "name_color" in resInfo ? resInfo.name_color : "#fff";
 
+      const isTriangleOffset =
+        "shape" in resInfo && resInfo.shape === "triangle" ? 15 : 0;
       str +=
         '<g class="unit-mode-dependent" transform="translate(' +
         x +
         "," +
         y +
         ')">' +
-        '<rect width="' +
-        size +
-        '" height="' +
-        size +
-        '" rx="3" fill="' +
-        fill +
-        '" stroke="#fff" stroke-width="1.5"/>' +
+        // The square
+        // '<rect width="' +
+        // size +
+        // '" height="' +
+        // size +
+        // '" rx="3" fill="' +
+        // fill +
+        // '" stroke="#fff" stroke-width="1.5"/>' +
+        // the resource icon
+        resIcon +
+        // The name text
         '<text x="' +
         size / 2 +
         '" y="' +
-        (size / 2 - 4) +
-        '" text-anchor="middle" dy=".35em" font-size="20" fill="#fff" stroke="none">' +
+        (size / 2 + isTriangleOffset) +
+        '" text-anchor="middle" dy=".35em" font-size="20" fill="' +
+        nameStroke +
+        // '"#0a0a0a"' +
+        '" stroke="none">' +
+        // '" stroke="#0a0a0a" stroke-width="1">' +
+
         label +
         "</text>" +
+        // The number of units text
         '<text x="' +
         (size - 3) +
         '" y="' +
@@ -511,6 +559,66 @@ class Planet {
   hideProbeData() {
     this.hide("intel");
     this.hide("probe");
+  }
+
+  // SVG for one resource marker (typeId 1-6, see the table in map.js) in an s x s box at x,y
+  resourceShape(info, x, y, s) {
+    // const info = RESOURCE_INFO[typeId];
+    if (!info) {
+      return "";
+    }
+    let stroke = "#fff";
+    if ("border" in info) {
+      stroke = info.border;
+    }
+    const look =
+      ' fill="' + info.color + '" stroke="' + stroke + '" stroke-width="3"';
+    switch (info.shape) {
+      case "triangle":
+        return (
+          '<polygon points="' +
+          x +
+          "," +
+          (y + s) +
+          " " +
+          (x + s / 2) +
+          "," +
+          y +
+          " " +
+          (x + s) +
+          "," +
+          (y + s) +
+          '"' +
+          look +
+          "/>"
+        );
+      case "circle":
+        return (
+          '<circle cx="' +
+          (x + s / 2) +
+          '" cy="' +
+          (y + s / 2) +
+          '" r="' +
+          s / 2 +
+          '"' +
+          look +
+          "/>"
+        );
+      default:
+        return (
+          '<rect x="' +
+          x +
+          '" y="' +
+          y +
+          '" width="' +
+          s +
+          '" height="' +
+          s +
+          '"' +
+          look +
+          "/>"
+        );
+    }
   }
 
   hide(el) {
