@@ -195,6 +195,10 @@ h1 {
   scrollbar-color: #fc0 transparent;
 }
 
+#left-space {
+  margin-top: 45px;
+}
+
 .mid-wrap {
   display: -webkit-box;
   display: -webkit-flex;

@@ -72,37 +72,40 @@
 
 <div class="space">
     <div class="left-right" id="left-space">
+
+        <h4>Game setup</h4>
+        <div class="panel-section">
             <div class="container">
                 <div class="option"><input type="radio" name="players" value="2" id="pl2" checked="checked" /><label for="pl2">2 players</label></div>
                 <div class="option"><input type="radio" name="players" value="4" id="pl4" /><label for="pl4">4 players</label></div>
                 <div class="option"><input type="checkbox" name="useExpansion" value="1" id="useExpansion" /><label for="useExpansion">Use 'Rise of the Empire' rules</label></div>
-            
-            <div class="option select-option">
-                <select id="difficulty" name="difficulty">
-                    <option value="normal">Normal</option>
-                    <option value="hard">Hard</option>
-                    <option value="expert">Expert</option>
-                </select>
-            </div>
-            <!-- <div class="dropdown" id="difficulty_dd" data-value="normal">
-                <button type="button" class="dropdown-toggle">Normal</button>
-                <ul class="dropdown-list" hidden>
-                    <li data-value="normal">Normal</li>
-                    <li data-value="hard">Hard</li>
-                    <li data-value="expert">Expert</li>
-                </ul>
-            </div> -->
+
+                <!-- <div class="option select-option">
+                    <select id="difficulty" name="difficulty">
+                        <option value="normal">Normal</option>
+                        <option value="hard">Hard</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div> -->
             </div>
             <div class="button" id="set_starting_loyalty_button">Set Starting Loyalty</div>
-            <!-- <div class="button" id="random_starting_loyalty_button">Set Random Starting Loyalty</div> -->
+        </div>
+
+        <h4>Reset</h4>
+        <div class="panel-section">
             <div class="button" id="reset_game_button">New Game</div>
             <div class="button" id="reset_map_button">Reset Map</div>
             <div class="button" id="undo_reset_button">Undo Reset</div>
-            <input type="file" id="import_file" accept=".json,application/json" hidden>
+        </div>
+
+        <h4>Save file</h4>
+        <div class="panel-section">
             <div class="button" id="share_link_button">Share link</div>
+            <input type="file" id="import_file" accept=".json,application/json" hidden>
             <div class="button" id="import_save_button">Load Save</div>
             <div class="button" id="export_save_button">Save Game</div>
-
+            
+        </div>
 
     </div>
     <div class="mid-wrap">

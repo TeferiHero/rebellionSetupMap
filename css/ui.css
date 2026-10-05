@@ -87,7 +87,7 @@
 
 .button {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
   padding: 9px 15px;
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -115,7 +115,7 @@
 /* ---------- Menu options (radio / checkbox as buttons) ---------- */
 
 .option {
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 /* hide the native control, but keep it focusable for keyboard users */
