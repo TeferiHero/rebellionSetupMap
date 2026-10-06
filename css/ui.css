@@ -62,6 +62,10 @@
   visibility: visible;
 }
 
+.unit-mode .unit-mode-hidden {
+  visibility: hidden;
+}
+
 /* narrow screens: five buttons would squeeze the header, so shrink the bar */
 @media (max-width: 800px) {
   :root {

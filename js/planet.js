@@ -23,11 +23,36 @@ class Planet {
       'stroke="#ffcc00" stroke-width="4" stroke-linejoin="round" pointer-events="none"/>';
 
     // Set markers
-    str += this.addObject("rebel", "loyalty", mapData.rebel);
-    str += this.addObject("empire", "loyalty", mapData.empire);
-    str += this.addObject("storm", "loyalty", mapData.storm);
-    str += this.addObject("rebel_storm", "loyalty", mapData.rebel_storm);
-    str += this.addObject("chewi", "loyalty", mapData.chewi);
+    str += this.addObject(
+      "rebel",
+      "loyalty",
+      mapData.rebel,
+      "unit-mode-hidden",
+    );
+    str += this.addObject(
+      "empire",
+      "loyalty",
+      mapData.empire,
+      "unit-mode-hidden",
+    );
+    str += this.addObject(
+      "storm",
+      "loyalty",
+      mapData.storm,
+      "unit-mode-hidden",
+    );
+    str += this.addObject(
+      "rebel_storm",
+      "loyalty",
+      mapData.rebel_storm,
+      "unit-mode-hidden",
+    );
+    str += this.addObject(
+      "chewi",
+      "loyalty",
+      mapData.chewi,
+      "unit-mode-hidden",
+    );
 
     str += this.addObject(
       "probe",
@@ -156,7 +181,7 @@ class Planet {
       height = 32,
       name = this.name;
     let str =
-        '<g id="queue_' +
+        '<g  class="unit-mode-hidden" id="queue_' +
         this.name +
         '">' +
         '<circle style="fill:#00bf00;stroke:#00bf00;stroke-width:1.6871;stroke-miterlimit:10;" cx="' +
@@ -195,7 +220,7 @@ class Planet {
           ];
 
           str +=
-            '<g id="res_' +
+            '<g class="unit-mode-hidden" id="res_' +
             name +
             "_" +
             idx +
@@ -210,7 +235,7 @@ class Planet {
           break;
         case 2: // Circle
           str +=
-            '<g id="res_' +
+            '<g class="unit-mode-hidden" id="res_' +
             name +
             "_" +
             idx +
@@ -228,7 +253,7 @@ class Planet {
           break;
         default: // Square
           str +=
-            '<g id="res_' +
+            '<g class="unit-mode-hidden" id="res_' +
             name +
             "_" +
             idx +
@@ -251,7 +276,7 @@ class Planet {
 
     // Sabotage marker
     str +=
-      '<g class="loyalty-mode-dependent sabotage-mode-dependent probe-mode-dependent" id="sabotage_' +
+      '<g class="unit-mode-hidden" id="sabotage_' +
       name +
       '">' +
       '<rect x="' +
