@@ -121,6 +121,19 @@ class UnitPanel {
     }
   }
 
+  // The nearest ancestor that scrolls (the .left-right column)
+  getScroller() {
+    let el = this.container;
+    while (el && el !== document.body) {
+      const overflow = getComputedStyle(el).overflowY;
+      if (overflow === "auto" || overflow === "scroll") {
+        return el;
+      }
+      el = el.parentElement;
+    }
+    return document.scrollingElement;
+  }
+
   // Add delta to a unit's number (never below 0, never above the map-wide limit)
   change(unit, delta) {
     const current = this.units[unit] || 0;
@@ -131,13 +144,44 @@ class UnitPanel {
     this.units[unit] = next;
 
     const counter = this.counters[unit];
+    // remember where this unit's row is on screen
+    const before = counter ? counter.getBoundingClientRect().top : null;
+
     if (counter) {
       counter.textContent = next;
     }
     this.updateButtons(unit);
     this.renderSummary();
+
+    // the list above may have grown or shrunk: scroll by the same amount
+    // so the buttons stay where the pointer is
+    if (before !== null) {
+      const shift = counter.getBoundingClientRect().top - before;
+      if (shift !== 0) {
+        this.getScroller().scrollTop += shift;
+      }
+    }
+
     this.onChange(unit, next);
   }
+
+  // // Add delta to a unit's number (never below 0, never above the map-wide limit)
+  // change(unit, delta) {
+  //   const current = this.units[unit] || 0;
+  //   const next = Math.min(this.getMax(unit), Math.max(0, current + delta));
+  //   if (next === current) {
+  //     return;
+  //   }
+  //   this.units[unit] = next;
+
+  //   const counter = this.counters[unit];
+  //   if (counter) {
+  //     counter.textContent = next;
+  //   }
+  //   this.updateButtons(unit);
+  //   this.renderSummary();
+  //   this.onChange(unit, next);
+  // }
 
   getLimit(unit) {
     return typeof getUnitLimit === "function" ? getUnitLimit(unit) : Infinity;
