@@ -58,10 +58,15 @@ class TurnOrder {
       this.currentPhase = phase;
       nextStep = undefined;
     }
-    this.currentStep = nextStep;
+    // console.log("nextStep = " + nextStep);
+    // this.currentStep = nextStep;
     this.run(phase, nextStep);
     this.game.save();
   }
+
+  // refresh() {
+  //   let phase = this.currentPhase;
+  //   let nextStep = this.currentStep;
 
   run(key, next) {
     const phase = this.gameOrder[key];
@@ -98,9 +103,17 @@ class TurnOrder {
       current = phase[next + "_adv"];
     }
 
+    this.currentStep = next;
     this.nextStep = current.next !== undefined ? current.next : null;
 
     console.log("Running [" + key + "->" + next + "]");
+    console.log("Current step = " + this.currentStep);
+    // console.log(
+    //   "Got current: " +
+    //     JSON.stringify(current) +
+    //     " Next step: " +
+    //     this.nextStep,
+    // );
 
     this.updateInfo(current.info);
     if (current.modes) {

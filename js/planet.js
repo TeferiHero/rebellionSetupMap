@@ -144,10 +144,8 @@ class Planet {
 
     this.sabotageFlag = !data.sabotage;
     this.toggleSabotage();
-    console.log(
-      "toggling sabotage on" + this.name + " value: " + this.sabotageFlag,
-    );
-    console.log(data);
+    // console.log(  "toggling sabotage on" + this.name + " value: " + this.sabotageFlag);
+    // console.log(data);
     this.renderUnits();
   }
 
