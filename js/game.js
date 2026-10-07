@@ -56,6 +56,8 @@ class Game {
     }
     // this.toggleTurnInfo();
     this.showButtons();
+    // a link pasted into the address bar while the page is open
+    window.addEventListener("hashchange", () => this.openSharedLink());
     this.loadFromLinkOrStorage();
   }
 
@@ -91,8 +93,10 @@ class Game {
     console.log(data);
 
     this.turnOrder.setState(data.phase, data.step);
-    this.isAdvanced = data.isAdvanced;
-    this.useExpansion = data.isExpansion;
+    this.setPlayersNumber(data.isAdvanced ? 4 : 2);
+    this.setUseExpansion(data.isExpansion);
+    // this.isAdvanced = data.isAdvanced;
+    // this.useExpansion = data.isExpansion;
 
     if (data.unitLimits) {
       Object.assign(UNIT_LIMITS, data.unitLimits);
@@ -114,13 +118,21 @@ class Game {
       prompt("Copy this link:", url); // clipboard needs https or localhost
     }
   }
-
+  // Open a shared link if there is one, otherwise load the normal save
   async loadFromLinkOrStorage() {
+    if (!(await this.openSharedLink())) {
+      this.load();
+    }
+  }
+
+  // Looks for #s=... in the address. Returns true if a shared game was loaded.
+  async openSharedLink() {
     const match = location.hash.match(/^#s=(.+)$/);
     if (!match) {
-      this.load();
-      return;
+      return false;
     }
+
+    let loaded = false;
     try {
       const data = await decodeState(match[1]);
       if (!data || typeof data !== "object" || !("map" in data)) {
@@ -129,12 +141,20 @@ class Game {
       if (confirm("Load the shared game? It replaces your current game.")) {
         this.save("Backup"); // "Undo reset" can bring the old game back
         localStorage.setItem("rebellionData", JSON.stringify(data));
+        loaded = true;
       }
     } catch (e) {
       alert("Could not open the link: " + e.message);
     }
-    history.replaceState(null, "", location.pathname); // so a refresh doesn't ask again
-    this.load();
+
+    // remove the code from the address, so a refresh doesn't ask again
+    // (replaceState doesn't fire hashchange)
+    history.replaceState(null, "", location.pathname + location.search);
+
+    if (loaded) {
+      this.load();
+    }
+    return loaded;
   }
 
   exportSave() {
@@ -179,12 +199,18 @@ class Game {
   }
 
   setPlayersNumber(playerNum) {
+    const pl2 = document.getElementById("pl2");
+    const pl4 = document.getElementById("pl4");
+
     this.mode = playerNum;
     if (this.mode == 4) {
       this.isAdvanced = true;
+      pl4.checked = true;
     } else {
       this.isAdvanced = false;
+      pl2.checked = true;
     }
+    // this.save();
   }
 
   updateUseExpansion() {
@@ -198,6 +224,12 @@ class Game {
     }
     this.unitPanel.refresh();
     this.limitsPanel?.render();
+  }
+
+  setUseExpansion(flag) {
+    const expansion = document.getElementById("useExpansion");
+    this.useExpansion = flag;
+    expansion.checked = flag;
   }
 
   initNewGame() {
@@ -253,9 +285,18 @@ class Game {
       },
 
       undo_reset_button: () => this.load("Backup"),
-      useExpansion: () => this.updateUseExpansion(),
-      pl2: () => this.setPlayersNumber(2),
-      pl4: () => this.setPlayersNumber(4),
+      useExpansion: () => {
+        this.updateUseExpansion();
+        this.save();
+      },
+      pl2: () => {
+        this.setPlayersNumber(2);
+        this.save();
+      },
+      pl4: () => {
+        this.setPlayersNumber(4);
+        this.save();
+      },
       share_link_button: () => this.copyShareLink(),
       export_save_button: () => this.exportSave(),
       import_save_button: () => imported_file_picker.click(),
