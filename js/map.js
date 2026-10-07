@@ -197,6 +197,7 @@ class GameMap {
   applyFixedData() {
     // Apply fixed data
     this.planetData["Coruscant"].toggleLoyalty();
+    this.planetData[REBEL_BASE.name].toggleLoyalty();
   }
 
   reset() {
