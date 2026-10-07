@@ -97,7 +97,10 @@ class Planet {
       "g",
     );
     unitsNode.setAttribute("id", "units_" + name);
-    document.getElementById("UnitLayer").appendChild(unitsNode);
+    // document.getElementById("UnitLayer").appendChild(unitsNode);
+    document
+      .getElementById(this.data.unitLayer || "UnitLayer")
+      .appendChild(unitsNode);
     this.unitsLayer = Snap(unitsNode);
     // this.unitsLayer = this.planet.select("#units_" + name);
     this.renderUnits();
@@ -373,9 +376,20 @@ class Planet {
         this.bg.attr({ fill: "#000", opacity: 0.25 });
         this.hide("chewi");
     }
+
+    // TODO: MAYBE KEEP ? a planet with its own colour (the rebel base) keeps it in every loyalty state
+    if (this.data.bgFill) {
+      this.bg.attr({
+        fill: this.data.bgFill,
+        opacity: this.data.bgOpacity ?? 0.45,
+      });
+    }
   }
 
   toggleProbeStatus() {
+    if (this.data.noProbe) {
+      return; // this system can't be probed
+    }
     this.probeStatus = (this.probeStatus % 3) + 1; // CYCLE TO NEXT STATE (1-3)
     this.updateProbeStatus();
   }
@@ -453,9 +467,10 @@ class Planet {
     // 2) automatic grid inside the planet's outline
     const n = i - slots.length;
     const box = this.bg.node.getBBox();
+    const maxCols = this.data.unitCols || 4;
     const cols = Math.max(
       1,
-      Math.max(4, Math.floor((box.width - 20) / (size + gap))),
+      Math.min(maxCols, Math.floor((box.width - 20) / (size + gap))),
     );
     return [
       box.x + 10 + (n % cols) * (size + gap),

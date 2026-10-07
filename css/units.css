@@ -13,7 +13,7 @@
 .unit-name {
   flex: 1;
   min-width: 0;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -127,7 +127,8 @@
   top: calc(var(--topbar-h) + 2 * var(--gap)); /* under the top bar */
   bottom: 0;
   left: 0;
-  width: min(280px, 85vw);
+  /* width: min(280px, 85vw); */
+  width: min(var(--side-min), 90vw);
   transform: translateX(-100%); /* closed: only the tab sticks out */
   transition: transform 0.25s ease;
   z-index: 15; /* above the top bar (10), below the build queue (20) */
@@ -222,6 +223,67 @@
 /* "Custom" is only a status, never a choice */
 .limits-panel .select-option option:disabled {
   opacity: 0.6;
+}
+
+/* REBEL BASE panel: same slide-out as the limits panel, but only as tall as its content */
+.rebel-base-wrap {
+  bottom: auto;
+  width: min(420px, 90vw);
+}
+
+/* its tab sits below the "Unit Limits" tab */
+.rebel-base-wrap .limits-toggle {
+  top: calc(var(--gap) + 66px);
+}
+
+.rebel-base-panel {
+  height: auto;
+  /* never taller than the space under the top bar; scroll inside beyond that */
+  max-height: calc(100vh - var(--topbar-h) - 2 * var(--gap));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.rebel-base-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.rebel-base-wrap {
+  bottom: auto;
+  width: min(var(--side-min), 90vw);
+}
+
+/* the "Add remaining rebel units" button: smaller text to fit the narrow panel */
+.rebel-base-fill {
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 8px 6px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+}
+
+/* While one side panel is open, the closed ones stay docked right beneath it:
+   only their tabs show, as if their panels were open under the top one. */
+.side-panel-open .limits-wrap:not(.open) {
+  transform: translateX(0);
+  z-index: 14; /* below the open panel (15) */
+  pointer-events: none; /* the invisible box must not block clicks on the page */
+}
+
+.side-panel-open .limits-wrap:not(.open) .limits-panel {
+  visibility: hidden; /* content hidden, even where it would stick out below the open panel */
+}
+
+.side-panel-open .limits-wrap:not(.open) .limits-toggle {
+  pointer-events: auto;
+}
+
+/* let the selection glow spill past the svg's edge instead of being clipped */
+.rebel-base-panel .rebel-base-svg {
+  overflow: visible;
 }
 
 /* "Delete all units" button at the bottom of the unit panel */

@@ -1,5 +1,6 @@
 class GameMap {
-  constructor(saveCallback) {
+  constructor(saveCallback, extraSvgs = {}) {
+    this.extraSvgs = extraSvgs; // planet name -> Snap paper, for planets outside #mysvg
     this.save = saveCallback;
     this.default = {
       rebel: {
@@ -37,6 +38,8 @@ class GameMap {
     this.clicksAllowed = true;
 
     this.initPlanetData();
+    this.planets[REBEL_BASE.name] = REBEL_BASE.planet;
+
     this.clickMode = "none";
     this.body = document.getElementsByTagName("body")[0];
 
@@ -64,7 +67,7 @@ class GameMap {
       this.planetData[name] = new Planet(
         name,
         planetData,
-        this.svg,
+        this.extraSvgs[name] || this.svg,
         this.default,
       );
 
@@ -117,6 +120,8 @@ class GameMap {
     );
 
     planetData["Coruscant"].loyalty = 4;
+    planetData["RebelBase"].loyalty = 1;
+
     const empirePlanets = [
       "Corellia",
       "Mygeeto",
@@ -1038,6 +1043,7 @@ class GameMap {
         bg: "M1113.3,886.9c-101.8-28.2-230.5,2.6-279.7,116.1l-0.4,0.8l-14,1.2l-0.9,1.6 c-0.1,0.2-11.8,22.1-6.2,73.5h447.5C1271.7,970.9,1188.8,907.8,1113.3,886.9z",
         loyalty: "1000,1005",
         probe: "-1000,-1000",
+        noProbe: true,
         unitSlots: [
           "941, 882",
           "1001, 882",

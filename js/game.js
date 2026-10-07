@@ -3,7 +3,13 @@
 
 class Game {
   constructor() {
-    this.map = new GameMap(this.save.bind(this));
+    // Setting up Map and RebelBase interactions
+    this.rebelBasePanel = new RebelBasePanel();
+    this.map = new GameMap(this.save.bind(this), {
+      [REBEL_BASE.name]: this.rebelBasePanel.svg,
+    });
+    this.rebelBasePanel.onFillRemaining = () => this.fillRebelBase();
+    // this.map = new GameMap(this.save.bind(this));
 
     // Amount of players mode
     this.mode = 2;
@@ -312,6 +318,37 @@ class Game {
     Object.entries(buttons).forEach(([id, action]) => {
       Game.showButton(id, action);
     });
+  }
+
+  // Put every rebel unit that is not on the map yet into the Rebel Base,
+  // so the whole map ends up with the max of each rebel unit
+  fillRebelBase() {
+    const planetsData = this.map.getPlanetsData() || {};
+    const planets = Object.values(planetsData);
+    const base = planetsData[REBEL_BASE.name];
+    if (!base) {
+      return;
+    }
+
+    let added = 0;
+    getUnitNames(this.useExpansion, "rebel").forEach((unit) => {
+      let total = 0;
+      planets.forEach((p) => {
+        total += (p.units && p.units[unit]) || 0;
+      });
+      const remaining = getUnitLimit(unit) - total;
+      if (remaining > 0) {
+        base.changePlanetUnits(unit, (base.units[unit] || 0) + remaining);
+        added += remaining;
+      }
+    });
+
+    if (added === 0) {
+      alert("There are no remaining rebel units to add.");
+      return;
+    }
+    this.save();
+    this.unitPanel.refresh(); // overview and planet rows depend on the new numbers
   }
 
   toggleTurnInfo() {

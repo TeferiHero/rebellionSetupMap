@@ -42,6 +42,11 @@ class LimitsPanel {
         this.change(btn.dataset.unit, Number(btn.dataset.delta));
       }
     });
+    document.addEventListener("sidepanel-open", (e) => {
+      if (e.detail !== this && this.open) {
+        this.setOpen(false);
+      }
+    });
 
     this.setOpen(false);
     this.render();
@@ -51,6 +56,12 @@ class LimitsPanel {
     this.open = open;
     this.wrap.classList.toggle("open", open);
     this.updateToggleLabel();
+    if (open) {
+      document.dispatchEvent(
+        new CustomEvent("sidepanel-open", { detail: this }),
+      );
+    }
+    refreshSidePanelState();
   }
 
   // The always-visible tab: "Limits (<preset name>) ▶"
@@ -185,4 +196,13 @@ class LimitsPanel {
     btn.textContent = text;
     return btn;
   }
+}
+
+// Marks the page while any side panel is open, so the closed ones can dock beneath it.
+// (on <html>, because the map replaces the whole class list of <body> when the mode changes)
+function refreshSidePanelState() {
+  document.documentElement.classList.toggle(
+    "side-panel-open",
+    !!document.querySelector(".limits-wrap.open"),
+  );
 }
