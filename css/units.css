@@ -1,0 +1,309 @@
+.unit-empty {
+  color: #aaa;
+  font-style: italic;
+}
+
+.unit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.unit-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.unit-count {
+  min-width: 2ch;
+  text-align: center;
+  color: #fc0;
+}
+
+.unit-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.unit-btn:hover {
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.18);
+}
+
+.unit-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.unit-filter {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.unit-filter-btn {
+  flex: 1;
+  padding: 6px 4px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.2s ease-out;
+}
+
+.unit-filter-btn:hover {
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.12);
+}
+
+.unit-filter-btn.active {
+  border-color: #fc0;
+  color: #fc0;
+  background-color: rgba(255, 204, 0, 0.18);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.45);
+}
+
+.left-right h4 {
+  margin: 14px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.4);
+  color: #fc0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.unit-sum-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.unit-sum-amount {
+  color: #fc0;
+  font-weight: bold;
+}
+
+.unit-planet {
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 204, 0, 0.35);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.unit-planet-name {
+  margin-bottom: 4px;
+  color: #fc0;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* LIMITS */
+
+.limits-wrap {
+  position: fixed;
+  top: calc(var(--topbar-h) + 2 * var(--gap)); /* under the top bar */
+  bottom: 0;
+  left: 0;
+  /* width: min(280px, 85vw); */
+  width: min(var(--side-min), 90vw);
+  transform: translateX(-100%); /* closed: only the tab sticks out */
+  transition: transform 0.25s ease;
+  z-index: 15; /* above the top bar (10), below the build queue (20) */
+}
+
+.limits-wrap.open {
+  transform: translateX(0);
+}
+
+.limits-panel {
+  height: 100%;
+  padding: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #fc0 transparent;
+  background-color: rgba(2, 6, 18, 0.92);
+  border-right: 2px solid #fc0;
+  border-radius: 0 10px 10px 0;
+  color: #fff;
+}
+
+/* same look as the unit panel's sub-headings (those rules only apply inside .left-right) */
+.limits-panel h4 {
+  margin: 14px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.4);
+  color: #fc0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* the tab that opens and closes the panel: looks like the nav buttons */
+.limits-toggle {
+  position: absolute;
+  left: 100%;
+  top: var(--gap);
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  background-color: rgba(2, 6, 18, 0.92);
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.limits-toggle-preset {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #fc0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.limits-toggle:hover {
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.18);
+}
+
+.limits-wrap.open .limits-toggle {
+  border-color: #fc0;
+  color: #fc0;
+}
+
+.limits-select {
+  margin-bottom: 12px;
+}
+
+/* the long preset names need less spacing in a narrow panel */
+.limits-panel .select-option select {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* "Custom" is only a status, never a choice */
+.limits-panel .select-option option:disabled {
+  opacity: 0.6;
+}
+
+/* REBEL BASE panel: same slide-out as the limits panel, but only as tall as its content */
+.rebel-base-wrap {
+  bottom: auto;
+  width: min(420px, 90vw);
+}
+
+/* its tab sits below the "Unit Limits" tab */
+.rebel-base-wrap .limits-toggle {
+  top: calc(var(--gap) + 66px);
+}
+
+.rebel-base-panel {
+  height: auto;
+  /* never taller than the space under the top bar; scroll inside beyond that */
+  max-height: calc(100vh - var(--topbar-h) - 2 * var(--gap));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.rebel-base-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.rebel-base-wrap {
+  bottom: auto;
+  width: min(var(--side-min), 90vw);
+}
+
+/* the "Add remaining rebel units" button: smaller text to fit the narrow panel */
+.rebel-base-fill {
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 8px 6px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+}
+
+/* While one side panel is open, the closed ones stay docked right beneath it:
+   only their tabs show, as if their panels were open under the top one. */
+.side-panel-open .limits-wrap:not(.open) {
+  transform: translateX(0);
+  z-index: 14; /* below the open panel (15) */
+  pointer-events: none; /* the invisible box must not block clicks on the page */
+}
+
+.side-panel-open .limits-wrap:not(.open) .limits-panel {
+  visibility: hidden; /* content hidden, even where it would stick out below the open panel */
+}
+
+.side-panel-open .limits-wrap:not(.open) .limits-toggle {
+  pointer-events: auto;
+}
+
+/* let the selection glow spill past the svg's edge instead of being clipped */
+.rebel-base-panel .rebel-base-svg {
+  overflow: visible;
+}
+
+/* "Delete all units" button at the bottom of the unit panel */
+.unit-clear-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 8px 10px;
+  border: 2px solid #b33;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.2s ease-out;
+}
+
+.unit-clear-btn:hover {
+  border-color: #f55;
+  background-color: rgba(255, 60, 60, 0.18);
+}

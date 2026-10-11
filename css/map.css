@@ -1,40 +1,62 @@
 :root {
-    --topbar-h: 100px;
+  --topbar-h: 60px;
+  --side-min: 240px; /* minimum width of each side column */
+  --gap: 12px; /* margin around the screen */
+  --map-h: calc(
+    100vh - var(--topbar-h) - 2 * var(--gap)
+  ); /* height left for the map */
 }
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* zero the margins */
 body {
-    margin: 0;
-    background-color: #020612;
-    overflow-x: hidden;
-    /* cursor: url('../images/SSD_Cursor.png'), auto; */
-    font-family: Montserrat, sans-serif;
+  margin: 0;
+  /* var(--gap); */
 
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  background-color: #020612;
+  overflow-x: hidden;
+  /* cursor: url('../images/SSD_Cursor.png'), auto; */
+  font-family: Montserrat, sans-serif;
+  color: #fff;
 
-    background-color: #020612;   /* shows while the image loads */
-    background-image: -webkit-radial-gradient(circle farthest-corner at 50% 100%, rgba(187, 82, 0, .5), rgba(0, 46, 143, .5)), url('../image/stars.jpg');
-    background-image: radial-gradient(circle farthest-corner at 50% 100%, rgba(187, 82, 0, .5), rgba(0, 46, 143, .5)), url('../image/stars.jpg');
-    background-position: 0px 0px, 50% 50%;
-    background-size: auto, 1000px;
-    background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  background-color: #020612; /* shows while the image loads */
+  background-image:
+    -webkit-radial-gradient(
+      circle farthest-corner at 50% 100%,
+      rgba(187, 82, 0, 0.5),
+      rgba(0, 46, 143, 0.5)
+    ),
+    url("../image/stars.jpg");
+  background-image:
+    radial-gradient(
+      circle farthest-corner at 50% 100%,
+      rgba(187, 82, 0, 0.5),
+      rgba(0, 46, 143, 0.5)
+    ),
+    url("../image/stars.jpg");
+  background-position:
+    0px 0px,
+    50% 50%;
+  background-size: auto, 1000px;
+  background-attachment: fixed;
 }
 
 .w-clearfix:before,
 .w-clearfix:after {
-    content: " ";
-    display: table;
+  content: " ";
+  display: table;
 }
 .w-clearfix:after {
-    clear: both;
+  clear: both;
 }
 
 h1,
@@ -43,274 +65,300 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 h1 {
-    font-size: 32px;
-    line-height: 36px;
-    margin-top: 20px;
+  font-size: 32px;
+  line-height: 36px;
+  margin-top: 20px;
 }
 
 /* ---------- Top bar: menu button | header | other buttons ---------- */
 
 .topbar {
-    /* margin: 10px; */
-    display: flex;
-    flex: 0 0 var(--topbar-h);
-    height: var(--topbar-h);
-    background-color: rgba(0, 0, 0, .25);;
-    z-index: 10;
+  /* margin: 10px; */
+  /* padding: var(--gap); */
+  display: flex;
+  flex: 0 0 calc(var(--topbar-h) + 2 * var(--gap));
+  height: calc(var(--topbar-h) + 2 * var(--gap));
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 10;
 }
 
 .header {
-    flex: 1;
-    min-width: 0;          /* lets it shrink instead of pushing the buttons out */
-    height: 100%;
-    padding: 10px 20px;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, .25);
-    color: #fff;
-    text-align: center;
+  flex: 1;
+  min-width: 0; /* lets it shrink instead of pushing the buttons out */
+  height: 100%;
+  padding: 10px 20px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.25);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #fc0 transparent;
+  color: #fff;
+  text-align: center;
 }
 
-@media (min-width: 801px)  { .header { font-size: 12px; } }  /* tablet, landscape iPad, lo-res laptops and desktops */
-@media (min-width: 1025px) { .header { font-size: 14px; } }  /* big landscape tablets, laptops, and desktops */
-@media (min-width: 1281px) { .header { font-size: 18px; } }  /* hi-res laptops and desktops */
+@media (min-width: 801px) {
+  .header {
+    font-size: 12px;
+  }
+} /* tablet, landscape iPad, lo-res laptops and desktops */
+@media (min-width: 1025px) {
+  .header {
+    font-size: 14px;
+  }
+} /* big landscape tablets, laptops, and desktops */
+@media (min-width: 1281px) {
+  .header {
+    font-size: 15px;
+  }
+} /* hi-res laptops and desktops */
 
 .header strong {
-    color: #ffcc00;
+  color: #ffcc00;
 }
 
 .header .admiral {
-    color: #3175e2;
+  color: #3175e2;
 }
 
 .header .general {
-    color: #ffcc00;
+  color: #ffcc00;
 }
 
 .spaceShip {
-    color: #3175e2;
+  color: #3175e2;
 }
 
 .ground {
-    color: #ffcc00;
+  color: #ffcc00;
 }
 
 /* ---------- Main area: fills the rest of the screen ---------- */
 
 .space {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    flex: 1;
-    min-height: 0;         /* important inside a flex column */
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-box-align: stretch;
-    -webkit-align-items: stretch;
-    -ms-flex-align: stretch;
-    align-items: stretch;
-    /* background-image: -webkit-radial-gradient(circle farthest-corner at 50% 100%, rgba(187, 82, 0, .5), rgba(0, 46, 143, .5)), url('../image/stars.jpg');
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex: 1;
+  min-height: 0; /* important inside a flex column */
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  /* background-image: -webkit-radial-gradient(circle farthest-corner at 50% 100%, rgba(187, 82, 0, .5), rgba(0, 46, 143, .5)), url('../image/stars.jpg');
     background-image: radial-gradient(circle farthest-corner at 50% 100%, rgba(187, 82, 0, .5), rgba(0, 46, 143, .5)), url('../image/stars.jpg');
     background-position: 0px 0px, 50% 50%;
     background-size: auto, 1000px; */
 }
 
 .top-bot {
-    display: block;
-    height: auto;
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    background-color: rgba(0, 0, 0, .25);
+  display: block;
+  height: auto;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .left-right {
-    -webkit-box-flex: 2;
-    -webkit-flex: 2;
-    -ms-flex: 2;
-    flex: 2;
-    padding: 10px;
-    /* background-color: rgba(0, 0, 0, .25); */
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+  padding: 10px;
 
-    /* min-width: 0;                 lets the column shrink instead of widening */
-    min-height: 0;                /* lets it be shorter than its content */
-    overflow-y: auto;             /* scrolls on its own */
-    overscroll-behavior: contain; /* scrolling the column doesn't scroll the page behind it */
+  min-width: var(--side-min); /* never narrower than this */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #fc0 transparent;
+}
 
-    /* optional: slim scrollbar in your colours */
-    scrollbar-width: thin;
-    scrollbar-color: #fc0 transparent;
+#left-space {
+  margin-top: 100px;
 }
 
 .mid-wrap {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 auto;
-    -ms-flex: 0 auto;
-    flex: 0 auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  /* preferred width = the width that fills the height, but it may shrink */
+
+  flex: 0 1 calc(var(--map-h) / 0.5625);
+  min-width: 0;
 }
 
 /* keeps the 16:9 ratio of the map, based on the height left under the top bar */
 .svg {
-    display: block;
-    width: calc((100vh - var(--topbar-h)) / 0.5625);
-    max-height: calc(100vh - var(--topbar-h));
-    max-width: 100vw;
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
+  /* margin: 10px; */
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9; /* keeps the map proportions when it shrinks */
+  transition: width 0.3s ease;
 }
 
 /**
  * Correct overflow not hidden in IE 9/10/11.
  */
 svg:not(:root) {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .centre {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 auto;
-    -ms-flex: 0 auto;
-    flex: 0 auto;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 auto;
+  -ms-flex: 0 auto;
+  flex: 0 auto;
 }
 
-#Names, .imperial, .droid, .intel {
-    pointer-events: none;
+#Names,
+.imperial,
+.droid,
+.intel {
+  pointer-events: none;
 }
 
 /* ---------- Menu overlay ---------- */
 
 .mask {
-    position: fixed;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, .75);
-    transition: 0.5s ease-out;
+  position: fixed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  transition: 0.5s ease-out;
 }
 
 .base {
-    position: relative;
-    width: 100%;
-    min-width: 232px;
-    padding: 30px;
-    clear: both;
-    color: #fff;
-    border-style: none solid solid;
-    border-width: 8px;
-    border-color: #fc0;
-    border-radius: 0px 0px 25px 25px;
+  position: relative;
+  width: 100%;
+  min-width: 232px;
+  padding: 30px;
+  clear: both;
+  color: #fff;
+  border-style: none solid solid;
+  border-width: 8px;
+  border-color: #fc0;
+  border-radius: 0px 0px 25px 25px;
 }
 
 .base .container {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .leftborder {
-    width: 28px;
-    height: 25px;
-    float: left;
-    border-top: 8px solid #fc0;
-    border-left: 8px solid #fc0;
-    border-top-left-radius: 25px;
+  width: 28px;
+  height: 25px;
+  float: left;
+  border-top: 8px solid #fc0;
+  border-left: 8px solid #fc0;
+  border-top-left-radius: 25px;
 }
 
 .rightborder {
-    width: 28px;
-    height: 25px;
-    float: right;
-    border-style: solid solid none none;
-    border-width: 8px;
-    border-color: #fc0;
-    border-top-right-radius: 25px;
+  width: 28px;
+  height: 25px;
+  float: right;
+  border-style: solid solid none none;
+  border-width: 8px;
+  border-color: #fc0;
+  border-top-right-radius: 25px;
 }
 
-
 .with-border {
-    border-style: solid;
-    border-width: 4px;
-    border-color: #fc0;
-    border-radius: 10px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #fc0;
+  border-radius: 10px;
 }
 
 /* ---------- Nav buttons (now inside .topbar) ---------- */
 
 div#build_queue {
-    position: absolute;
-    display: none;
-    top: var(--topbar-h);
-    z-index: 20;
-    width: 50%;
-    left: 25%;
-    min-height: 300px;
-    padding: 20px;
-    background-color: #000;
-    color: #fff;
+  position: absolute;
+  display: none;
+  top: calc(var(--topbar-h) + 2 * var(--gap));
+  z-index: 20;
+  width: 50%;
+  left: 25%;
+  min-height: 300px;
+  padding: 20px;
+  background-color: #000;
+  color: #fff;
 }
 
 .heading-2 {
-    position: absolute;
-    left: 0px;
-    top: -32px;
-    right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-family: Montserrat, sans-serif;
-    color: #fc0;
-    font-size: 17px;
-    line-height: 20px;
-    font-weight: 800;
-    text-align: center;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  position: absolute;
+  left: 0px;
+  top: -32px;
+  right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-family: Montserrat, sans-serif;
+  color: #fc0;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 991px) {
-    body {
-        cursor: auto;
-    }
-    .button {
-        cursor: pointer;
-    }
+  body {
+    cursor: auto;
+  }
+  .button {
+    cursor: pointer;
+  }
+}
+
+.planet-selected {
+  filter: brightness(1.6) drop-shadow(0 0 6px #fc0) drop-shadow(0 0 10px #fc0)
+    drop-shadow(0 0 20px #fc0);
+  opacity: 0.6 !important; /* see note below */
+  transition: filter 0.2s;
 }

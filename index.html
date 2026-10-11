@@ -16,12 +16,17 @@
 <!--    <link href="images/droid.png" rel="apple-touch-icon">-->
     <!-- <script src="js/modernizr.js" type="text/javascript"></script> -->
     <script src="js/snap.svg-min.js" type="text/javascript"></script>
-
+   
+    <script src="js/units.js"  type="text/javascript"></script>
+    <script src="js/unitPanel.js"  type="text/javascript"></script>
+    <script src="js/limitsPanel.js" type="text/javascript"></script>
+    <script src="js/rebelBasePanel.js" type="text/javascript"></script>
     <script src="js/planet.js" type="text/javascript"></script>
-    <script src="js/map.js"></script>
-    <script src="js/buildQueue.js"></script>
-    <script src="js/turnOrder.js"></script>
-    <script src="js/game.js"></script>
+    <script src="js/map.js" type="text/javascript"></script>
+    <script src="js/buildQueue.js" type="text/javascript"></script>
+    <script src="js/turnOrder.js" type="text/javascript"></script>
+    <script src="js/share.js" type="text/javascript"></script>
+    <script src="js/game.js" type="text/javascript"></script>
     <script type="text/javascript">
         //<![CDATA[
         window.onload = function() {
@@ -58,39 +63,50 @@
     </div>
     <div class="navbutton" id="next_button">Next</div>
         <!-- <div class="modeselect" id="mode_select"> -->
-        <div class="navbutton" id="map_nav">Loyalty</div>
+        <div class="navbutton" id="loyalty_nav">Loyalty</div>
         <div class="navbutton" id="sabotage_nav">Sabotage</div>
         <div class="navbutton" id="probe_nav">Probe Droid</div>
+        <div class="navbutton" id="unit_nav">Units</div>
+
     <!-- </div>s -->
 </div>
 
 <div class="space">
     <div class="left-right" id="left-space">
+
+        <h4>Game setup</h4>
+        <div class="panel-section">
             <div class="container">
                 <div class="option"><input type="radio" name="players" value="2" id="pl2" checked="checked" /><label for="pl2">2 players</label></div>
                 <div class="option"><input type="radio" name="players" value="4" id="pl4" /><label for="pl4">4 players</label></div>
                 <div class="option"><input type="checkbox" name="useExpansion" value="1" id="useExpansion" /><label for="useExpansion">Use 'Rise of the Empire' rules</label></div>
-            
-            <div class="option select-option">
-                <select id="difficulty" name="difficulty">
-                    <option value="normal">Normal</option>
-                    <option value="hard">Hard</option>
-                    <option value="expert">Expert</option>
-                </select>
-            </div>
-            <!-- <div class="dropdown" id="difficulty_dd" data-value="normal">
-                <button type="button" class="dropdown-toggle">Normal</button>
-                <ul class="dropdown-list" hidden>
-                    <li data-value="normal">Normal</li>
-                    <li data-value="hard">Hard</li>
-                    <li data-value="expert">Expert</li>
-                </ul>
-            </div> -->
+
+                <!-- <div class="option select-option">
+                    <select id="difficulty" name="difficulty">
+                        <option value="normal">Normal</option>
+                        <option value="hard">Hard</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div> -->
             </div>
             <div class="button" id="set_starting_loyalty_button">Set Starting Loyalty</div>
+        </div>
+
+        <h4>Reset</h4>
+        <div class="panel-section">
             <div class="button" id="reset_game_button">New Game</div>
-            <div class="button" id="reset_map_button">Reset Map</div>
+            <div class="button" id="reset_map_button">Clear Map</div>
             <div class="button" id="undo_reset_button">Undo Reset</div>
+        </div>
+
+        <h4>Save file</h4>
+        <div class="panel-section">
+            <div class="button" id="share_link_button">Share link</div>
+            <input type="file" id="import_file" accept=".json,application/json" hidden>
+            <div class="button" id="import_save_button">Load Save</div>
+            <div class="button" id="export_save_button">Save Game</div>
+            
+        </div>
 
     </div>
     <div class="mid-wrap">
@@ -1306,11 +1322,16 @@
                     c-1.1,1.1-2.6,1.8-4.8,1.8c-1.2,0-3.5-0.3-4.9-1.8c-1.4-1.5-1.7-2.7-1.7-5.2v-10.3H1834.4z"/>
                     </g>
                 </g>
+
+                <!-- Unit names should go over the names, there is just not enough space -->
+                <g class="unit-mode-dependent" id="UnitLayer" pointer-events="none"></g>
         </svg>
         </div>
 <!--        <div class="top-bot"></div>-->
     </div>
-    <div class="left-right"></div>
+    <div class="left-right unit-mode-dependent">
+         <div id="unit_panel"></div>
+    </div>
 </div>
 </body>
 </html>

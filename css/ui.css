@@ -1,203 +1,205 @@
+@import "map.css";
 
 .navbutton {
-    flex: 0 0 var(--topbar-h);
-    width: var(--topbar-h);
-    height: var(--topbar-h);
-    font-size: 14px;
-    color: #fff;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background-color: transparent;
-    padding: 2px;
-    text-align: center;
-    cursor: pointer;
-    display: none;          /* shown by your JS */
-    align-items: center;         /* vertical centering */
-    justify-content: center;     /* horizontal centering */
+  flex: 0 0 var(--topbar-h);
+  height: var(--topbar-h);
+  font-size: 20px;
+  color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: transparent;
+  margin: var(--gap) var(--gap);
+  padding: 0 20px;
+  text-align: center;
+  cursor: pointer;
+  display: none; /* shown by your JS */
+  align-items: center; /* vertical centering */
+  justify-content: center; /* horizontal centering */
 }
 
 .navbutton:hover {
-    border-color: #fc0;
-    background-color: rgba(255, 204, 0, 0.12);
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.12);
 }
 
-.navbutton#menu_button,
+/* .navbutton#menu_button,
 .navbutton#next_button,
-.navbutton#map_nav,
+.navbutton#loyalty_nav,
 .navbutton#probe_nav   {
     font-size: 20px;
-}
+} */
 
-.navbutton#sabotage_nav {
-    font-size: 16px;
-}
+/* .navbutton#sabotage_nav {
+  font-size: 16px;
+} */
 
 /* .navbutton#sabotage_nav,
 .navbutton#probe_nav {
     font-size: 14px;
 } */
 
-.loyalty #map_nav,
-.sabotage #sabotage_nav,
-.probe #probe_nav {
-    border-color: #fc0;
-    background-color: rgba(255, 204, 0, 0.24);
-
-
-    /* box-shadow: 0 0 8px #fc0; */
+.unit-mode #unit_nav,
+.loyalty-mode #loyalty_nav,
+.sabotage-mode #sabotage_nav,
+.probe-mode #probe_nav {
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.24);
+  /* box-shadow: 0 0 8px #fc0; */
 }
 
+.unit-mode-dependent,
+.loyalty-mode-dependent,
+.sabotage-mode-dependent,
+.probe-mode-dependent {
+  visibility: hidden;
+}
 
+.unit-mode .unit-mode-dependent,
+.loyalty-mode .loyalty-mode-dependent,
+.sabotage-mode .sabotage-mode-dependent,
+.probe-mode .probe-mode-dependent {
+  /* display: block; */
+  visibility: visible;
+}
+
+.unit-mode .unit-mode-hidden {
+  visibility: hidden;
+}
 
 /* narrow screens: five buttons would squeeze the header, so shrink the bar */
 @media (max-width: 800px) {
-    :root {
-        --topbar-h: 60px;
-    }
-    .navbutton,
-    .navbutton#menu_button,
-    .navbutton#next_button,
-    .navbutton#sabotage_nav,
-    .navbutton#probe_nav {
-        padding-top: 8px;
-        font-size: 11px;
-    }
-    .header {
-        font-size: 12px;
-        padding: 5px;
-    }
+  :root {
+    --topbar-h: 60px;
+  }
+  .navbutton,
+  .navbutton#menu_button,
+  .navbutton#next_button,
+  .navbutton#sabotage_nav,
+  .navbutton#probe_nav {
+    padding-top: 8px;
+    font-size: 11px;
+  }
+  .header {
+    font-size: 12px;
+    padding: 5px;
+  }
 }
-
-
-
-
-
-
 
 .next-button:hover {
-    font-weight: bold;
+  font-weight: bold;
 }
 
-
 .button {
-    display: block;
-    margin-bottom: 20px;
-    padding: 9px 15px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background-color: transparent;
-    font-family: Montserrat, sans-serif;
-    color: #fff;
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    /* cursor: url('../images/SSD_Cursor.png'), pointer; */
-    cursor: pointer;
-    /* opacity: 0; */
-    transition: 0.2s ease-out;
+  display: block;
+  margin-bottom: 6px;
+  padding: 9px 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: Montserrat, sans-serif;
+  color: #fff;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  /* cursor: url('../images/SSD_Cursor.png'), pointer; */
+  cursor: pointer;
+  /* opacity: 0; */
+  transition: 0.2s ease-out;
 }
 
 .button:hover {
-    border-color: #fc0;
-    /* background-color: #2a2200; */
-    background-color: rgba(255, 204, 0, 0.12);
-    
+  border-color: #fc0;
+  /* background-color: #2a2200; */
+  background-color: rgba(255, 204, 0, 0.12);
 }
-
-
-
-
-
-
 
 /* ---------- Menu options (radio / checkbox as buttons) ---------- */
 
 .option {
-    margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 /* hide the native control, but keep it focusable for keyboard users */
 .option input {
-    position: absolute;
-    opacity: 0;
-    width: 1px;
-    height: 1px;
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
 }
 
 .option label {
-    display: block;
-    padding: 10px 15px 10px 44px;     /* room for the indicator on the left */
-    position: relative;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background-color: transparent;
-    font-family: Montserrat, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    /* cursor: url('../images/SSD_Cursor.png'), pointer; */
-    cursor: pointer;
-    transition: 0.1s ease-out;
+  display: block;
+  padding: 10px 15px 10px 44px; /* room for the indicator on the left */
+  position: relative;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  /* cursor: url('../images/SSD_Cursor.png'), pointer; */
+  cursor: pointer;
+  transition: 0.1s ease-out;
 }
 
 /* indicator: circle for radios, square for checkboxes */
 .option label::before {
-    content: "";
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    transform: translateY(-50%);
-    border: 2px solid #fc0;
-    transition: 0.1s ease-out;
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  border: 2px solid #fc0;
+  transition: 0.1s ease-out;
 }
 
-.option input[type="radio"] + label::before    { border-radius: 50%; }
-.option input[type="checkbox"] + label::before { border-radius: 3px; }
+.option input[type="radio"] + label::before {
+  border-radius: 50%;
+}
+.option input[type="checkbox"] + label::before {
+  border-radius: 3px;
+}
 
 /* hover */
 .option label:hover {
-    border-color: #fc0;
-    background-color: rgba(255, 204, 0, 0.12);
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.12);
 }
 
 /* selected */
 .option input:checked + label {
-    border-color: #fc0;
-    color: #fc0;
-    background-color: rgba(255, 204, 0, 0.18);
-    box-shadow: 0 0 12px rgba(255, 204, 0, 0.55),
-                inset 0 0 8px rgba(255, 204, 0, 0.25);
+  border-color: #fc0;
+  color: #fc0;
+  background-color: rgba(255, 204, 0, 0.18);
+  box-shadow:
+    0 0 12px rgba(255, 204, 0, 0.55),
+    inset 0 0 8px rgba(255, 204, 0, 0.25);
 }
 
 .option input:checked + label::before {
-    background-color: #fc0;
-    box-shadow: 0 0 8px #fc0;
+  background-color: #fc0;
+  box-shadow: 0 0 8px #fc0;
 }
 
 /* keyboard focus (Tab / arrow keys) */
 .option input:focus-visible + label {
-    outline: 2px solid #3175e2;
-    outline-offset: 3px;
+  outline: 2px solid #3175e2;
+  outline-offset: 3px;
 }
 
 @media (max-width: 991px) {
-    .option label { cursor: pointer; }
+  .option label {
+    cursor: pointer;
+  }
 }
-
-
-
-
-
-
-
-
 
 /* DROPDOWN */
 /* 
@@ -286,135 +288,128 @@
     display: none;
 } */
 
-
-
-
-
-
 /* DROPDOWN SELECT */
 
 .select-option {
-    position: relative;
+  position: relative;
 }
 
 .select-option select {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    padding: 10px 44px 10px 15px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background-color: transparent;
-    font-family: Montserrat, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    /* cursor: url('../images/SSD_Cursor.png'), pointer; */
-    cursor: pointer;
-    transition: 0.1s ease-out;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: 10px 44px 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: transparent;
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  /* cursor: url('../images/SSD_Cursor.png'), pointer; */
+  cursor: pointer;
+  transition: 0.1s ease-out;
 }
 
 /* arrow */
 .select-option::after {
-    content: "";
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    width: 8px;
-    height: 8px;
-    margin-top: -6px;
-    border-right: 2px solid #fc0;
-    border-bottom: 2px solid #fc0;
-    transform: rotate(45deg);
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -6px;
+  border-right: 2px solid #fc0;
+  border-bottom: 2px solid #fc0;
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
 .select-option select:hover,
 .select-option select:focus {
-    border-color: #fc0;
-    background-color: rgba(255, 204, 0, 0.12);
-    outline: none;
+  border-color: #fc0;
+  background-color: rgba(255, 204, 0, 0.12);
+  outline: none;
 }
 
 /* the open list: browsers only allow basic colors here */
 .select-option select option {
-    background-color: #000;
-    color: #555;
+  background-color: #000;
+  color: #555;
 }
-
-
-
 
 @supports (appearance: base-select) {
+  /* the native picker icon replaces the ::after arrow */
+  .select-option::after {
+    display: none;
+  }
 
-    /* the native picker icon replaces the ::after arrow */
-    .select-option::after { display: none; }
+  .select-option select,
+  .select-option select::picker(select) {
+    appearance: base-select;
+  }
 
-    .select-option select,
-    .select-option select::picker(select) {
-        appearance: base-select;
-    }
+  .select-option select {
+    padding: 10px 15px;
+  }
 
-    .select-option select {
-        padding: 10px 15px;
-    }
+  /* arrow */
+  .select-option select::picker-icon {
+    color: #fc0;
+    transition: 0.1s ease-out;
+  }
+  .select-option select:open::picker-icon {
+    rotate: 180deg;
+  }
 
-    /* arrow */
-    .select-option select::picker-icon {
-        color: #fc0;
-        transition: 0.1s ease-out;
-    }
-    .select-option select:open::picker-icon {
-        rotate: 180deg;
-    }
+  /* the dropdown panel */
+  .select-option select::picker(select) {
+    margin-top: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+  }
 
-    /* the dropdown panel */
-    .select-option select::picker(select) {
-        margin-top: 6px;
-        padding: 0;
-        border: none;
-        background: transparent;
-    }
+  /* each option looks like your option buttons */
+  .select-option option {
+    padding: 10px 15px;
+    margin-bottom: 6px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background-color: #000;
+    color: #fff;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.1s ease-out;
+  }
 
-    /* each option looks like your option buttons */
-    .select-option option {
-        padding: 10px 15px;
-        margin-bottom: 6px;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        background-color: #000;
-        color: #fff;
-        font-family: Montserrat, sans-serif;
-        font-size: 14px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: 0.1s ease-out;
-    }
+  .select-option option:hover,
+  .select-option option:focus-visible {
+    border-color: #fc0;
+    background-color: #2a2200;
+  }
 
-    .select-option option:hover,
-    .select-option option:focus-visible {
-        border-color: #fc0;
-        background-color: #2a2200;
-    }
+  .select-option option:checked {
+    border-color: #fc0;
+    color: #fc0;
+    box-shadow:
+      0 0 12px rgba(255, 204, 0, 0.55),
+      inset 0 0 8px rgba(255, 204, 0, 0.25);
+  }
 
-    .select-option option:checked {
-        border-color: #fc0;
-        color: #fc0;
-        box-shadow: 0 0 12px rgba(255, 204, 0, 0.55),
-                    inset 0 0 8px rgba(255, 204, 0, 0.25);
-    }
-
-    /* hide the built-in checkmark */
-    .select-option option::checkmark {
-        display: none;
-    }
+  /* hide the built-in checkmark */
+  .select-option option::checkmark {
+    display: none;
+  }
 }
 
-
 #game_info {
-    margin: auto;
-    text-align: center;
+  margin: auto;
+  text-align: center;
 }
