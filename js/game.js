@@ -119,9 +119,9 @@ class Game {
     let origin = location.origin;
     console.log(origin);
     console.log(location.protocol);
-    if (location.protocol === "file:") {
-      origin = "file://";
-    }
+    // if (location.protocol === "file:") {
+    //   origin = "file://";
+    // }
     const url = origin + location.pathname + "#s=" + code;
     console.log(location.origin);
     console.log(location.pathname);
