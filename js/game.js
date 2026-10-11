@@ -116,7 +116,17 @@ class Game {
 
   async copyShareLink() {
     const code = await encodeState(this.save());
-    const url = location.origin + location.pathname + "#s=" + code;
+    let origin = location.origin;
+    console.log(origin);
+    console.log(location.protocol);
+    if (location.protocol === "file:") {
+      origin = "file://";
+    }
+    const url = origin + location.pathname + "#s=" + code;
+    console.log(location.origin);
+    console.log(location.pathname);
+    console.log(code);
+
     try {
       await navigator.clipboard.writeText(url);
       alert("Link copied (" + url.length + " characters)");
