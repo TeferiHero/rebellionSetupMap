@@ -64,6 +64,8 @@ class UnitPanel {
     // (a plain object: this project defines its own class Map)
     this.summaryEl = null; // element that lists the units with a number above 0
 
+    this.spacer = null; // empty element at the bottom that gives the scroll fix room
+
     // one listener for all buttons
     this.container.addEventListener("click", (e) => {
       if (e.target.closest("button[data-clear]")) {
@@ -100,6 +102,7 @@ class UnitPanel {
     this.buttons = {};
     this.summaryEl = null;
     this.renderOverview();
+    this.spacer = null; // empty element at the bottom that gives the scroll fix room
   }
 
   // Call after the planets were loaded or reset: goes back to the overview with fresh numbers
@@ -155,10 +158,29 @@ class UnitPanel {
 
     // the list above may have grown or shrunk: scroll by the same amount
     // so the buttons stay where the pointer is
+    // the list above may have grown or shrunk: scroll by the same amount
+    // so the buttons stay where the pointer is
     if (before !== null) {
       const shift = counter.getBoundingClientRect().top - before;
       if (shift !== 0) {
-        this.getScroller().scrollTop += shift;
+        const scroller = this.getScroller();
+        if (shift > 0 && this.spacer) {
+          // where the content really ends (the bottom of the spacer, plus the column's padding)
+          const bottom =
+            this.spacer.getBoundingClientRect().bottom -
+            scroller.getBoundingClientRect().top +
+            scroller.scrollTop +
+            (parseFloat(getComputedStyle(scroller).paddingBottom) || 0);
+
+          // to scroll down by `shift` the content must end at least here:
+          const needed = scroller.scrollTop + shift + scroller.clientHeight;
+
+          if (bottom < needed) {
+            const height = parseFloat(this.spacer.style.height) || 0;
+            this.spacer.style.height = height + (needed - bottom) + "px";
+          }
+        }
+        scroller.scrollTop += shift;
       }
     }
 
@@ -387,6 +409,10 @@ class UnitPanel {
     clearBtn.textContent = "Delete all units";
     this.container.appendChild(clearBtn);
 
+    // empty element at the bottom: grows when the scroll fix needs more room
+    this.spacer = document.createElement("div");
+    this.spacer.className = "unit-spacer";
+    this.container.appendChild(this.spacer);
     this.renderSummary();
   }
 
@@ -427,7 +453,7 @@ class UnitPanel {
   }
 
   makeEmptyText(text) {
-    const p = document.createElement("p");
+    const p = document.createElement("span");
     p.className = "unit-empty";
     p.textContent = text;
     return p;
